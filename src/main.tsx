@@ -6,7 +6,7 @@
 // Importing them with Promise.all (by using HTTP/2 multiplexing) we can load them in parallel
 // and achieve the best possible performance
 
-Promise.all([import('@/Root'), import('@/App')]).then(([{ render }, { App }]) => {
+Promise.all([import('@/render'), import('@/app')]).then(([{ render }, { App }]) => {
   render(App);
 });
 

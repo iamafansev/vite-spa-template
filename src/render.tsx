@@ -11,6 +11,6 @@ export const render = (App: ComponentType) => {
       <HelmetProvider>
         <App />
       </HelmetProvider>
-    </StrictMode>,
+    </StrictMode>
   );
 }
