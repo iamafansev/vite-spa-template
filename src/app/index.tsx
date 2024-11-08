@@ -5,7 +5,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { routes } from "./routes";
 import "./entry.css";
 
-const router = createBrowserRouter(routes);
+const router = createBrowserRouter(routes, {
+    future: {},
+});
 
 export const App = () => {
     return (

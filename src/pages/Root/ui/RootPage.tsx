@@ -1,11 +1,11 @@
 import { useLoaderData } from "react-router-typesafe";
 
-import type { Data } from "./loader";
+import type { Data } from "../api/loader";
 
 import LogoIcon from "./vite.svg?react";
-import classes from "./Root.module.css";
+import classes from "./RootPage.module.css";
 
-export const Root = () => {
+export const RootPage = () => {
     const data = useLoaderData<Data>();
 
     return (
@@ -22,4 +22,4 @@ export const Root = () => {
     );
 };
 
-Root.displayName = "Root";
+RootPage.displayName = "RootPage";
