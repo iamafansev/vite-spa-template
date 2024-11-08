@@ -1,13 +1,18 @@
+import { StrictMode } from 'react';
+import { HelmetProvider } from 'react-helmet-async';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import { routes } from "@/pages";
-
+import { routes } from "./routes";
 import './entry.css';
 
 const router = createBrowserRouter(routes);
 
 export const App = () => {
   return (
-    <RouterProvider router={router} />
+    <StrictMode>
+      <HelmetProvider>
+        <RouterProvider router={router} />
+      </HelmetProvider>
+    </StrictMode>
   )
 };
