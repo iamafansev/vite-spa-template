@@ -7,7 +7,7 @@ export const Root = () => {
 
     return (
         <>
-            <h1>{data.title}</h1>
+            <h1 className="font-bold text-4xl underline">{data.title}</h1>
             <div className="card">
                 <p>
                     Edit <code>src/App.tsx</code> and save to test HMR
