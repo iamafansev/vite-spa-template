@@ -1,6 +1,6 @@
-import {useLoaderData} from "react-router-typesafe";
+import { useLoaderData } from "react-router-typesafe";
 
-import type {Data} from './loader';
+import type { Data } from "./loader";
 
 export const Root = () => {
     const data = useLoaderData<Data>();
@@ -10,12 +10,10 @@ export const Root = () => {
             <h1>{data.title}</h1>
             <div className="card">
                 <p>
-                Edit <code>src/App.tsx</code> and save to test HMR
+                    Edit <code>src/App.tsx</code> and save to test HMR
                 </p>
             </div>
-            <p className="read-the-docs">
-                Click on the Vite and React logos to learn more
-            </p>
+            <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
         </>
     );
 };
