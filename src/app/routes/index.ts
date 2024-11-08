@@ -4,7 +4,10 @@ export const routes: RouteObject[] = [
     {
         path: "/",
         lazy: async () => {
-            const [{ Root }, { loader }] = await Promise.all([import("@/pages/Root"), import("@/pages/Root/loader")]);
+            const [{ Root }, { loader }] = await Promise.all([
+                import("@/pages/Root/Root"),
+                import("@/pages/Root/loader"),
+            ]);
 
             return {
                 loader,
