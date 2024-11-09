@@ -2,6 +2,8 @@ import { StrictMode } from "react";
 import { HelmetProvider } from "react-helmet-async";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import { PageLoader } from "@/shared/ui";
+
 import { routes } from "./routes";
 import "./entry.css";
 
@@ -18,7 +20,7 @@ export const App = () => {
     return (
         <StrictMode>
             <HelmetProvider>
-                <RouterProvider router={router} />
+                <RouterProvider fallbackElement={<PageLoader />} router={router} />
             </HelmetProvider>
         </StrictMode>
     );

@@ -6,9 +6,15 @@ export const routes: RouteObject[] = [
     {
         path: ROUTES.$path(),
         lazy: () => import("@/pages/root"),
-    },
-    {
-        path: "*",
-        lazy: () => import("@/pages/no-match"),
+        children: [
+            {
+                index: true,
+                lazy: () => import("@/pages/home"),
+            },
+            {
+                path: "*",
+                lazy: () => import("@/pages/no-match"),
+            },
+        ],
     },
 ];
