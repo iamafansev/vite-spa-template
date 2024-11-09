@@ -1,6 +1,9 @@
 import { makeLoader } from "react-router-typesafe";
 
-export const loader = makeLoader(() => {
+import { sleep } from "@/shared/utils";
+
+export const loader = makeLoader(async () => {
+    await sleep(2000);
     return { title: "Root" };
 });
 
