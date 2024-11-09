@@ -1,12 +1,24 @@
 import { useLoaderData } from "react-router-typesafe";
 
+import { useTheme } from "@/entities/theme";
+
 import type { Data } from "../api/loader";
 
 import LogoIcon from "./vite.svg?react";
 import classes from "./HomePage.module.css";
+import { useCallback } from "react";
 
 export const HomePage = () => {
+    const { theme, setTheme } = useTheme();
     const data = useLoaderData<Data>();
+
+    const toggleTheme = useCallback(() => {
+        if (theme === "dark") {
+            setTheme("light");
+        } else {
+            setTheme("dark");
+        }
+    }, [theme, setTheme]);
 
     return (
         <section className="flex flex-col items-center">
@@ -17,6 +29,9 @@ export const HomePage = () => {
                     Edit <code>src/App.tsx</code> and save to test HMR
                 </p>
             </div>
+            <button type="button" onClick={toggleTheme}>
+                toggle theme
+            </button>
             <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
         </section>
     );
