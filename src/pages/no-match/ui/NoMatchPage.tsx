@@ -1,4 +1,4 @@
-import { NavLink } from "@/shared/ui";
+import { Link } from "@/shared/ui";
 import { ROUTES } from "@/shared/routes";
 
 export const NoMatchPage = () => {
@@ -6,7 +6,7 @@ export const NoMatchPage = () => {
         <div id="error-page">
             <h1>Oops!</h1>
             <p>Not found</p>
-            <NavLink to={ROUTES.$buildPath({})}>Go home</NavLink>
+            <Link to={ROUTES.$buildPath({})}>Go home</Link>
         </div>
     );
 };

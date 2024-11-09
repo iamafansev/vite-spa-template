@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { useLoaderData } from "react-router-typesafe";
 
 import type { Data } from "../api/loader";
@@ -13,8 +12,6 @@ export const HomePage = () => {
         <section className="flex flex-col items-center">
             <LogoIcon />
             <h1 className="font-bold text-4xl underline">{data.title}</h1>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
             <div className={classes.card}>
                 <p>
                     Edit <code>src/App.tsx</code> and save to test HMR

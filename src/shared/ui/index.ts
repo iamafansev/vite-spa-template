@@ -1,3 +1,3 @@
 export { ErrorBoundary } from "./ErrorBoundary/ErrorBoundary";
-export { NavLink } from "./NavLink/NavLink";
+export { Link } from "./Link/Link";
 export { PageLoader } from "./PageLoader/PageLoader";
