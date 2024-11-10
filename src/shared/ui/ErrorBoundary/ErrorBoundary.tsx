@@ -1,9 +1,11 @@
-import { useRouteError, isRouteErrorResponse } from "react-router-dom";
+import { useRouteError, isRouteErrorResponse, useRevalidator } from "react-router-dom";
 
 import { isError } from "@/shared/lib";
+import { Button } from "@/shared/ui";
 
 export const ErrorBoundary = () => {
     const error = useRouteError();
+    const revalidator = useRevalidator();
 
     if (isRouteErrorResponse(error)) {
         switch (error.status) {
@@ -21,6 +23,13 @@ export const ErrorBoundary = () => {
                         <p>Sorry, an unexpected error has occurred.</p>
                         <p>
                             <i>{error.statusText}</i>
+                            <Button
+                                type="button"
+                                loading={revalidator.state === "loading"}
+                                onClick={revalidator.revalidate}
+                            >
+                                refetch
+                            </Button>
                         </p>
                     </div>
                 );

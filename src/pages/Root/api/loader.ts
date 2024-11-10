@@ -1,6 +1,6 @@
 import { makeLoader } from "react-router-typesafe";
 
-export const loader = makeLoader(async () => {
+export const loader = makeLoader(() => {
     return {};
 });
 
