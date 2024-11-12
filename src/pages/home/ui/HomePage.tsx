@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useLoaderData } from "react-router-typesafe";
 
 import { useTheme } from "@/entities/theme";
@@ -21,13 +22,16 @@ export const HomePage = () => {
     }, [theme, setTheme]);
 
     return (
-        <section className="flex flex-col items-center">
+        <section className="flex flex-col items-center pt-32">
             <LogoIcon />
             <h1 className="font-bold text-4xl underline">{data.title}</h1>
             <div className={classes.card}>
                 <p>
                     Edit <code>src/App.tsx</code> and save to test HMR
                 </p>
+                <Link to="/unknown" className="underline">
+                    go to UNKNOWN (404) page
+                </Link>
             </div>
             <button type="button" onClick={toggleTheme}>
                 toggle theme

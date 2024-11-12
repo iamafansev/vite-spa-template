@@ -1,7 +1,7 @@
 import { Outlet, useNavigation } from "react-router-dom";
 import { useLoaderData } from "react-router-typesafe";
 
-import { PageLoader } from "@/shared/ui";
+import { PageLoader, SubmittingOverlay } from "@/shared/ui";
 
 import type { Data } from "../api/loader";
 
@@ -10,12 +10,15 @@ export const RootPage = () => {
     const navigation = useNavigation();
 
     switch (navigation.state) {
+        case "idle":
+            return <Outlet />;
         case "loading":
             return <PageLoader />;
-        case "idle":
         case "submitting":
-            return <Outlet />;
+            return (
+                <SubmittingOverlay>
+                    <Outlet />
+                </SubmittingOverlay>
+            );
     }
 };
-
-RootPage.displayName = "RootPage";
