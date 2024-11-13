@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { HelmetProvider } from "react-helmet-async";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, RouterProvider, type LoaderFunction } from "react-router-dom";
 
 import { ThemeProvider } from "@/entities/theme";
 import { PageLoader } from "@/shared/ui";
@@ -8,21 +8,64 @@ import { PageLoader } from "@/shared/ui";
 import { routes } from "./routes";
 import "./entry.css";
 
-const router = createBrowserRouter(routes, {
-    future: {
-        v7_relativeSplatPath: true,
-        v7_fetcherPersist: true,
-        v7_normalizeFormMethod: true,
-        v7_skipActionErrorRevalidation: true,
-    },
-});
+const ROUTER_FUTURE = {
+    v7_startTransition: true,
+};
+
+const ROUTES_FUTURE = {
+    v7_relativeSplatPath: true,
+    v7_fetcherPersist: true,
+    v7_normalizeFormMethod: true,
+    v7_skipActionErrorRevalidation: true,
+};
+
+// The HandlerContext type is defined in the @type/router.d.ts file
+type Context = Parameters<LoaderFunction>[1];
+
+const getClient = () => {
+    // Replace with a real API client
+    return <T,>(value: T): T => {
+        return value;
+    };
+};
 
 export const App = () => {
+    const client = getClient();
+
+    const router = createBrowserRouter(routes, {
+        future: ROUTES_FUTURE,
+        dataStrategy: async ({ matches }) => {
+            const context: Context = {
+                client,
+            };
+
+            // Run loaders in parallel with the `context` value
+            const matchesToLoad = matches.filter((m) => m.shouldLoad);
+
+            const results = await Promise.all(
+                matchesToLoad.map((match) =>
+                    match.resolve((handler) => {
+                        // Whatever you pass to `handler` will be passed as the 2nd parameter to your loader/action
+                        return handler(context);
+                    }),
+                ),
+            );
+
+            return results.reduce(
+                (acc, result, i) =>
+                    Object.assign(acc, {
+                        [matchesToLoad[i].route.id]: result,
+                    }),
+                {},
+            );
+        },
+    });
+
     return (
         <StrictMode>
             <HelmetProvider>
                 <ThemeProvider>
-                    <RouterProvider fallbackElement={<PageLoader />} router={router} />
+                    <RouterProvider future={ROUTER_FUTURE} fallbackElement={<PageLoader />} router={router} />
                 </ThemeProvider>
             </HelmetProvider>
         </StrictMode>
