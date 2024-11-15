@@ -5,7 +5,7 @@ import { Loader2 } from "lucide-react";
 
 import { cn } from "@/shared/utils/cn";
 
-const buttonVariants = cva(
+const variants = cva(
     "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
     {
         variants: {
@@ -31,18 +31,16 @@ const buttonVariants = cva(
     },
 );
 
-export interface ButtonProps
-    extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-        VariantProps<typeof buttonVariants> {
+export interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement>, VariantProps<typeof variants> {
     asChild?: boolean;
     loading?: boolean;
 }
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+const Button = React.forwardRef<HTMLButtonElement, Props>(
     ({ className, variant, size, asChild = false, loading, children, ...props }, ref) => {
         const Comp = asChild ? Slot : "button";
         return (
-            <Comp disabled={loading} className={cn(buttonVariants({ variant, size, className }))} ref={ref} {...props}>
+            <Comp disabled={loading} className={cn(variants({ variant, size, className }))} ref={ref} {...props}>
                 {loading ? <Loader2 className="animate-spin" /> : children}
             </Comp>
         );
@@ -50,4 +48,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 Button.displayName = "Button";
 
-export { Button, buttonVariants };
+export { Button, variants };

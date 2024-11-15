@@ -1,5 +1,7 @@
-import { Link } from "react-router-dom";
+import { Link as LinkRRD } from "react-router-dom";
 import { useLoaderData } from "react-router-typesafe";
+
+import { Link } from "@/shared/ui";
 
 import { useTheme } from "@/entities/theme";
 
@@ -29,8 +31,10 @@ export const HomePage = () => {
                 <p>
                     Edit <code>src/App.tsx</code> and save to test HMR
                 </p>
-                <Link to="/unknown" className="underline">
-                    go to UNKNOWN (404) page
+                <Link asChild>
+                    <LinkRRD to="/unknown" className="underline">
+                        go to UNKNOWN (404) page
+                    </LinkRRD>
                 </Link>
             </div>
             <button type="button" onClick={toggleTheme}>
