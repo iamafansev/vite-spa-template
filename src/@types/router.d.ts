@@ -15,11 +15,7 @@ import type {
     AgnosticBaseRouteObject as OriginalAgnosticBaseRouteObject,
 } from "@remix-run/router";
 
-// Change the context type here
-type HandlerContext = Readonly<{
-    // identityFN
-    client: <T>(value: T) => T;
-}>;
+import type { HandlerContext } from "@/app";
 
 type LoaderFunctionCustom<Context = unknown> = (
     args: LoaderFunctionArgs<Context>,

@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { HelmetProvider } from "react-helmet-async";
-import { createBrowserRouter, RouterProvider, type LoaderFunction } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { ThemeProvider } from "@/entities/theme";
 import { PageLoader } from "@/shared/ui";
@@ -19,8 +19,10 @@ const ROUTES_FUTURE = {
     v7_skipActionErrorRevalidation: true,
 };
 
-// The HandlerContext type is defined in the @type/router.d.ts file
-type Context = Parameters<LoaderFunction>[1];
+export type HandlerContext = Readonly<{
+    // identityFN for example
+    client: <T>(value: T) => T;
+}>;
 
 const getClient = () => {
     // Replace with a real API client
@@ -35,7 +37,7 @@ export const App = () => {
     const router = createBrowserRouter(routes, {
         future: ROUTES_FUTURE,
         dataStrategy: async ({ matches }) => {
-            const context: Context = {
+            const context: HandlerContext = {
                 client,
             };
 
