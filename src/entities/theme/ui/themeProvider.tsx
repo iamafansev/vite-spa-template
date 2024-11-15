@@ -3,12 +3,12 @@ import { useLocalStorage } from "react-use";
 
 import { ThemeContext, LOCAL_STORAGE_THEME_KEY, THEMES, type Theme, DEFAULT_THEME } from "../config/themeContext";
 
-export const ThemeProvider: FC<PropsWithChildren> = ({ children }) => {
-    const [storageValue, setStorageValue] = useLocalStorage<Theme>(LOCAL_STORAGE_THEME_KEY, DEFAULT_THEME);
+const useTheme = () => {
+    const [storageValue, setStorageValue] = useLocalStorage<string>(LOCAL_STORAGE_THEME_KEY, DEFAULT_THEME);
 
     const theme = useMemo(() => {
-        if (storageValue && THEMES.includes(storageValue)) {
-            return storageValue;
+        if (storageValue && (THEMES as string[]).includes(storageValue)) {
+            return storageValue as Theme;
         }
 
         return DEFAULT_THEME;
@@ -20,6 +20,12 @@ export const ThemeProvider: FC<PropsWithChildren> = ({ children }) => {
             setStorageValue(DEFAULT_THEME);
         }
     }, [setStorageValue, storageValue, theme]);
+
+    return { theme, setStorageValue };
+};
+
+export const ThemeProvider: FC<PropsWithChildren> = ({ children }) => {
+    const { theme, setStorageValue } = useTheme();
 
     useEffect(() => {
         const root = window.document.documentElement;
