@@ -8,7 +8,7 @@
         "build": "tsc -b && vite build",
         "format": "npx @biomejs/biome format --write ./",
         "lint": "npx @biomejs/biome lint --write ./",
-        "tsc:check": "tsc",
+        "tsc:check": "tsc -b",
         "preview": "vite preview",
         "docker:build": "tsc && docker build -t docker-react .",
         "docker:run": "docker rm -f docker-react && docker run --name docker-react -d -p 80:8082 docker-react"
