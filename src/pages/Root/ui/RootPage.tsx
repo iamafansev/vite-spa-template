@@ -1,4 +1,4 @@
-import { Outlet, useNavigation } from "react-router-dom";
+import { Outlet, useNavigation, ScrollRestoration } from "react-router-dom";
 import { useLoaderData } from "react-router-typesafe";
 
 import { PageLoader, SubmittingOverlay } from "@/shared/ui";
@@ -11,7 +11,12 @@ export const RootPage = () => {
 
     switch (navigation.state) {
         case "idle":
-            return <Outlet />;
+            return (
+                <div>
+                    <Outlet />
+                    <ScrollRestoration />
+                </div>
+            );
         case "loading":
             return <PageLoader />;
         case "submitting":
