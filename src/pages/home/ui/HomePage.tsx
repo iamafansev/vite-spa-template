@@ -1,14 +1,13 @@
 import { Link as LinkRRD } from "react-router-dom";
 import { useLoaderData } from "react-router-typesafe";
 
-import { Link } from "@/shared/ui";
+import { Link, Button } from "@/shared/ui";
 
 import { useTheme } from "@/entities/theme";
 
 import type { Data } from "../api/loader";
 
 import LogoIcon from "./vite.svg?react";
-import classes from "./HomePage.module.css";
 import { useCallback } from "react";
 
 export const HomePage = () => {
@@ -26,8 +25,8 @@ export const HomePage = () => {
     return (
         <section className="flex flex-col items-center pt-32">
             <LogoIcon />
-            <h1 className="font-bold text-4xl underline">{data.title}</h1>
-            <div className={classes.card}>
+            <h1 className="font-bold text-4xl">{data.title}</h1>
+            <div className="mt-10 text-center">
                 <p>
                     Edit <code>src/App.tsx</code> and save to test HMR
                 </p>
@@ -37,10 +36,9 @@ export const HomePage = () => {
                     </LinkRRD>
                 </Link>
             </div>
-            <button type="button" onClick={toggleTheme}>
+            <Button type="button" onClick={toggleTheme} className="my-4">
                 toggle theme
-            </button>
-            <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
+            </Button>
         </section>
     );
 };
