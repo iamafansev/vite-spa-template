@@ -1,7 +1,8 @@
 import { useRouteError, isRouteErrorResponse, useRevalidator } from "react-router-dom";
 
 import { isError } from "@/shared/lib";
-import { Button } from "@/shared/ui";
+
+import { Button } from "../Button/Button";
 
 export const ErrorBoundary = () => {
     const error = useRouteError();

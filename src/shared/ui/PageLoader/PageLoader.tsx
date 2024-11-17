@@ -1,6 +1,6 @@
 import type { FC } from "react";
 
-import { Loader } from "@/shared/ui";
+import { Loader } from "../Loader/Loader";
 
 export const PageLoader: FC = () => {
     return (

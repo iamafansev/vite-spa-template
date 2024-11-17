@@ -1,7 +1,8 @@
 import { type PropsWithChildren, type HTMLAttributes, forwardRef } from "react";
 
 import { cn } from "@/shared/utils";
-import { Loader } from "@/shared/ui";
+
+import { Loader } from "../Loader/Loader";
 
 interface Props extends HTMLAttributes<HTMLDivElement>, PropsWithChildren {}
 
