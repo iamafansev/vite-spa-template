@@ -5,7 +5,7 @@ import { ROUTES } from "@/shared/routes";
 export const routes: RouteObject[] = [
   {
     path: ROUTES.$path(),
-    lazy: () => import("@/pages/rootLayout"),
+    lazy: () => import("@/pages/root"),
     children: [
       {
         index: true,
