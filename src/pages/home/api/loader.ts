@@ -1,10 +1,9 @@
 import { makeLoader } from "react-router-typesafe";
 
-import { sleep } from "@/shared/utils";
+import { GetHomePageDataQuery } from "./queries";
 
-export const loader = makeLoader(async () => {
-  await sleep(500);
-  return { title: "Root" };
+export const loader = makeLoader(async (_, context) => {
+  return context.client.query(GetHomePageDataQuery, {});
 });
 
 export type Data = typeof loader;

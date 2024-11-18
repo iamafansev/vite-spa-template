@@ -11,36 +11,41 @@ import LogoIcon from "./vite.svg?react";
 import { useCallback } from "react";
 
 export const HomePage = () => {
-    const { theme, setTheme } = useTheme();
-    const data = useLoaderData<Data>();
+  const { theme, setTheme } = useTheme();
+  const data = useLoaderData<Data>();
 
-    const toggleTheme = useCallback(() => {
-        if (theme === "dark") {
-            setTheme("light");
-        } else {
-            setTheme("dark");
-        }
-    }, [theme, setTheme]);
+  const toggleTheme = useCallback(() => {
+    if (theme === "dark") {
+      setTheme("light");
+    } else {
+      setTheme("dark");
+    }
+  }, [theme, setTheme]);
 
-    return (
-        <section className="flex flex-col items-center pt-32">
-            <LogoIcon />
-            <h1 className="font-bold text-4xl">{data.title}</h1>
-            <div className="mt-10 text-center">
-                <p>
-                    Edit <code>src/App.tsx</code> and save to test HMR
-                </p>
-                <Link asChild>
-                    <LinkRRD to="/unknown" className="underline">
-                        go to UNKNOWN (404) page
-                    </LinkRRD>
-                </Link>
-            </div>
-            <Button type="button" onClick={toggleTheme} className="my-4">
-                toggle theme
-            </Button>
-        </section>
-    );
+  return (
+    <section className="flex flex-col items-center pt-32">
+      <LogoIcon />
+      <h1 className="font-bold text-4xl">Pokemons</h1>
+      <div className="mt-10 text-center">
+        <p>
+          Edit <code>src/App.tsx</code> and save to test HMR
+        </p>
+        <Link asChild>
+          <LinkRRD to="/unknown" className="underline">
+            go to UNKNOWN (404) page
+          </LinkRRD>
+        </Link>
+      </div>
+      <Button type="button" onClick={toggleTheme} className="my-4">
+        toggle theme
+      </Button>
+      <ul>
+        {data.data?.getAllPokemon.map(({ key }) => (
+          <li key={key}>{key}</li>
+        ))}
+      </ul>
+    </section>
+  );
 };
 
 HomePage.displayName = "HomePage";

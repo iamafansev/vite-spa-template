@@ -31,7 +31,7 @@ export type HandlerContext = Readonly<{
 
 const getClient = () => {
   return new Client({
-    url: "http://localhost:3000/graphql",
+    url: "https://graphqlpokemon.favware.tech/v8/graphql",
     exchanges: [cacheExchange, fetchExchange],
   });
 };
