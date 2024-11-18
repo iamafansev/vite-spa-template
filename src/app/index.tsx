@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { HelmetProvider } from "react-helmet-async";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Client, cacheExchange, fetchExchange, Provider as ClientProvider } from "urql";
 
 import { ThemeProvider } from "@/entities/theme";
 import { PageLoader } from "@/shared/ui";
@@ -20,15 +21,14 @@ const ROUTES_FUTURE = {
 };
 
 export type HandlerContext = Readonly<{
-    // identityFN for example
-    client: <T>(value: T) => T;
+    client: Client;
 }>;
 
 const getClient = () => {
-    // Replace with a real API client
-    return <T,>(value: T): T => {
-        return value;
-    };
+    return new Client({
+        url: "http://localhost:3000/graphql",
+        exchanges: [cacheExchange, fetchExchange],
+    });
 };
 
 export const App = () => {
@@ -67,7 +67,9 @@ export const App = () => {
         <StrictMode>
             <HelmetProvider>
                 <ThemeProvider>
-                    <RouterProvider future={ROUTER_FUTURE} fallbackElement={<PageLoader />} router={router} />
+                    <ClientProvider value={client}>
+                        <RouterProvider future={ROUTER_FUTURE} fallbackElement={<PageLoader />} router={router} />
+                    </ClientProvider>
                 </ThemeProvider>
             </HelmetProvider>
         </StrictMode>

@@ -4,8 +4,10 @@ import react from "@vitejs/plugin-react-swc";
 import webfontDownload from "vite-plugin-webfont-dl";
 import svgr from "vite-plugin-svgr";
 import { VitePWA } from "vite-plugin-pwa";
+import codegen from "vite-plugin-graphql-codegen";
 
 import manifest from "./manifest.json";
+import { config as codegenConfig } from "./codegen";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -13,6 +15,12 @@ export default defineConfig({
         react(),
         webfontDownload(),
         svgr(),
+        codegen({
+            configOverrideWatcher: {
+                watch: ["src/**/*.{ts,tsx}", "!src/gql/**/*"],
+            },
+            config: codegenConfig,
+        }),
         VitePWA({
             manifest,
             includeAssets: ["favicon.svg", "favicon.ico", "robots.txt", "apple-touch-icon.png"],

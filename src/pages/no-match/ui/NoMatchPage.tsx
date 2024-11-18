@@ -1,9 +1,10 @@
+import type { FC } from "react";
 import { Link as LinkRRD } from "react-router-dom";
 
 import { Link } from "@/shared/ui";
 import { ROUTES } from "@/shared/routes";
 
-export const NoMatchPage = () => {
+export const NoMatchPage: FC = () => {
     return (
         <div id="error-page" className="flex flex-col items-center pt-32">
             <h1>Oops!</h1>
