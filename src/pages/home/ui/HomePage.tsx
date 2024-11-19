@@ -40,7 +40,7 @@ export const HomePage = () => {
         toggle theme
       </Button>
       <ul>
-        {data.data?.getAllPokemon.map(({ key }) => (
+        {data.getAllPokemon.map(({ key }) => (
           <li key={key}>{key}</li>
         ))}
       </ul>
