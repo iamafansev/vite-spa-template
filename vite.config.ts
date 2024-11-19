@@ -11,31 +11,38 @@ import { config as codegenConfig } from "./codegen";
 
 // https://vite.dev/config/
 export default defineConfig({
-    plugins: [
-        react(),
-        webfontDownload(),
-        svgr(),
-        codegen({
-            configOverrideWatcher: {
-                watch: ["src/**/*.{ts,tsx}", "!src/gql/**/*"],
-            },
-            config: codegenConfig,
-        }),
-        VitePWA({
-            manifest,
-            includeAssets: ["favicon.svg", "favicon.ico", "robots.txt", "apple-touch-icon.png"],
-            // switch to "true" to enable sw on development
-            devOptions: {
-                enabled: false,
-            },
-            workbox: {
-                globPatterns: ["**/*.{js,css,html}", "**/*.{svg,png,jpg,gif}"],
-            },
-        }),
-    ],
-    resolve: {
-        alias: {
-            "@": path.resolve(__dirname, "./src"),
-        },
+  plugins: [
+    react(),
+    webfontDownload(),
+    svgr(),
+    codegen({
+      runOnStart: false,
+      runOnBuild: false,
+      configOverrideWatcher: {
+        watch: ["src/**/*.{ts,tsx}", "!src/gql/**/*"],
+      },
+      config: codegenConfig,
+    }),
+    VitePWA({
+      manifest,
+      includeAssets: [
+        "favicon.svg",
+        "favicon.ico",
+        "robots.txt",
+        "apple-touch-icon.png",
+      ],
+      // switch to "true" to enable sw on development
+      devOptions: {
+        enabled: false,
+      },
+      workbox: {
+        globPatterns: ["**/*.{js,css,html}", "**/*.{svg,png,jpg,gif}"],
+      },
+    }),
+  ],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
     },
+  },
 });
