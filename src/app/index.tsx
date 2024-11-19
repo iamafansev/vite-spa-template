@@ -31,7 +31,7 @@ export type HandlerContext = Readonly<{
 
 const getClient = () => {
   return new Client({
-    url: "https://graphqlpokemon.favware.tech/v8/graphql",
+    url: import.meta.env.VITE_API_URL,
     exchanges: [cacheExchange, fetchExchange],
   });
 };
