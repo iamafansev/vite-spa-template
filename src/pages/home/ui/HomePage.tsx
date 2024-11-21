@@ -1,5 +1,6 @@
 import { Link as LinkRRD } from "react-router-dom";
 import { useLoaderData } from "react-router-typesafe";
+import { useTranslation } from "react-i18next";
 
 import { Link, Button } from "@/shared/ui";
 
@@ -11,6 +12,7 @@ import LogoIcon from "./vite.svg?react";
 import { useCallback } from "react";
 
 export const HomePage = () => {
+  const { t } = useTranslation("home");
   const { theme, setTheme } = useTheme();
   const data = useLoaderData<Data>();
 
@@ -25,7 +27,7 @@ export const HomePage = () => {
   return (
     <section className="flex flex-col items-center pt-32">
       <LogoIcon />
-      <h1 className="font-bold text-4xl">Pokemons</h1>
+      <h1 className="font-bold text-4xl">{t("title")}</h1>
       <div className="mt-10 text-center">
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
