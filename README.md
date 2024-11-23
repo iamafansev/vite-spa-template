@@ -31,8 +31,8 @@ This is a client application built with Vite, React, React Router DOM, React-i18
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/project-name.git
-   cd project-name
+   git clone https://github.com/iamafansev/vite-spa-template.git
+   cd vite-spa-template
    ```
 2. Install dependencies:
 
@@ -65,6 +65,40 @@ yarn build
 ```
 
 This will generate the optimized files in the dist directory.
+
+## Env variables
+
+`.env.development` - variables for the development environment
+`.env.production` - variables for the production environment
+
+After adding or removing a variable, you need to duplicate the changes from interface in the `./src/@types/vite-env.d.ts` file for correct typing.
+
+### Accessing variables
+
+`console.log(import.meta.env.YOUR_VARIABLE);`
+
+More information in the [documents](https://main.vitejs.dev/guide/env-and-mode.html)
+
+## Graphql codegen
+
+To generate types from the graphql schema, [graphql codegen](https://the-guild.dev/graphql/codegen) is used and integrated via [vite-plugin-graphql-codegen](https://github.com/danielwaltz/vite-plugin-graphql-codegen#readme).
+Generation occurs when files containing the graphql tag are changed.
+
+All types of graphkl schema will be generated in the directory `./src/shared/api/models`.
+
+Example:
+
+```ts
+import { graphql } from "@/shared/api/models";
+
+export const GetHomePageDataQuery = graphql(/* GraphQL */ `
+  query GetHomePageData {
+    getAllPokemon(offset: 0, take: 10) {
+      key
+    }
+  }
+`);
+```
 
 ## Localization
 
