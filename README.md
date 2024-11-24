@@ -151,12 +151,12 @@ Here’s a brief overview of how to implement them:
 // ./pages/your-page/api/loader.ts
 import { makeLoader } from "react-router-typesafe";
 
-import { makeResult } from "@/shared/api/utils";
+import { mapResultSourseToPromise } from "@/shared/api/utils";
 
 export const loader = makeLoader(async ({ request }, context) => {
   const resultSource = context.client.query(YOUR_QUERY, {});
 
-  return makeResult(resultSource);
+  return mapResultSourseToPromise(resultSource);
 });
 
 export type Data = typeof loader;
@@ -180,7 +180,7 @@ export const YourPage = () => {
 ```javascript
 import { makeAction } from "react-router-typesafe";
 
-import { makeResult } from "@/shared/api/utils";
+import { mapResultSourseToPromise } from "@/shared/api/utils";
 
 export const action = makeAction(async ({ request }, context) => {
   const formData = new URLSearchParams(await request.text());
@@ -188,7 +188,7 @@ export const action = makeAction(async ({ request }, context) => {
     input: formData.get("inputField"),
   });
 
-  return makeResult(resultSource);
+  return mapResultSourseToPromise(resultSource);
 });
 
 export type ActionData = typeof action;
