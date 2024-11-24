@@ -8,6 +8,7 @@ export default defineConfig({
     coverage: {
       reporter: ["text", "json", "html"],
     },
+    setupFiles: "./src/setupTests.ts",
   },
   resolve: {
     alias: {

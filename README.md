@@ -194,6 +194,57 @@ export const action = makeAction(async ({ request }, context) => {
 export type ActionData = typeof action;
 ```
 
+## Testing
+
+### Writing Tests
+
+Create your test files with the `.spec.ts` or `.spec.tsx` extension. Here is an example of a simple test for a React component:
+
+```tsx
+// ./src/components/YourComponent.test.tsx
+import { render, screen } from "@testing-library/react";
+import { describe, it, expect } from "vitest";
+import YourComponent from "./YourComponent";
+
+describe("YourComponent", () => {
+  it("renders correctly", () => {
+    render(<YourComponent />);
+    expect(screen.getByText("Your Component Text")).toBeInTheDocument();
+  });
+});
+```
+
+### Running Tests
+
+To run your tests, use the following command:
+
+```bash
+npm run unit
+```
+
+You can also run tests in watch mode:
+
+```bash
+npm run unit:watch
+```
+
+## Docker
+
+To build and run the application using Docker, follow these steps:
+
+1. Build the Docker image:
+
+   ```sh
+   docker build -t your-image-name .
+   ```
+
+2. Run the Docker container:
+   ```sh
+   docker run -p 8082:8082 your-image-name
+   ```
+
+This will build the application and serve it using Nginx on port 8082.
+
 ## Directory Structure
 
 ```
