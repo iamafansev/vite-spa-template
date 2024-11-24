@@ -11,7 +11,10 @@ const throwAnyErrors = <T, V extends object>(result: OperationResult<T, V>) => {
   }
 
   if (!data) {
-    throw new Response("Unexpected error", { status: 500 });
+    throw new Response("Unexpected error", {
+      statusText: "Unexpected error",
+      status: 500,
+    });
   }
 
   return data;
@@ -19,10 +22,16 @@ const throwAnyErrors = <T, V extends object>(result: OperationResult<T, V>) => {
 
 const mapUnknownError = (error: unknown) => {
   if (error instanceof Error) {
-    throw new Response(error.message, { status: 500 });
+    throw new Response(error.message, {
+      status: 500,
+      statusText: error.message,
+    });
   }
 
-  throw new Response("Unexpected error", { status: 500 });
+  throw new Response("Unexpected error", {
+    statusText: "Unexpected error",
+    status: 500,
+  });
 };
 
 /**
