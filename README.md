@@ -102,11 +102,33 @@ export const GetHomePageDataQuery = graphql(/* GraphQL */ `
 
 ## Localization
 
-This application supports multiple languages. To add a new language, you need to:
+This app supports multiple languages. To add a new language, you need to:
 
-1. Create a new JSON file in the locales directory for the language.
-2. Add translations for all necessary keys used in the application.
-3. Configure react-i18next to include the new language.
+1. Create a new directory with the desired language `./public/locales/{lng}`
+2. Support all namespaces used in the app `./public/locales/{lng}/{ns}` and add your translations to them
+3. Configure react-i18next to include the new language `src/entities/i18n/config/init.ts` -> `supportedLngs`.
+
+### Current locale
+
+The current locale is determined from the local storage if it was saved by the user's choice. Otherwise, the current locale will be set based on the browser language.
+
+### Adding namespace
+
+The namespace needs to be added to the path `./public/locales/{lng}/your-namespace.json`
+
+Then the translations will be available in the application:
+
+```tsx
+import { useTranslation } from "react-i18next";
+
+export const YourComponent = () => {
+  const { t } = useTranslation("your-namespace");
+
+  return <h1>{t("key")}</h1>;
+};
+```
+
+Note: Hot reloading is not available within locales. Therefore, in order to see the changes, you need to reload the page.
 
 ## Router Context
 

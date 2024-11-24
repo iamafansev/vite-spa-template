@@ -16,6 +16,7 @@ export const initI18n = async () => {
       fallbackLng: "ru",
       ns: "app",
       defaultNS: "app",
+      supportedLngs: ["en", "ru"],
 
       keySeparator: false,
 
