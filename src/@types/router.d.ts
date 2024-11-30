@@ -1,56 +1,75 @@
-import type {
-  ActionFunction as OriginalActionFunction,
-  ActionFunctionArgs,
-  LoaderFunction as OriginalLoaderFunction,
-  LoaderFunctionArgs,
-  IndexRouteObject as OriginalIndexRouteObject,
-  LazyRouteFunction,
-  NonIndexRouteObject as OriginalNonIndexRouteObject,
+import {
+  AgnosticNonIndexRouteObject as AgnosticNonIndexRouteObjectOriginal,
+  AgnosticIndexRouteObject as AgnosticIndexRouteObjectOriginal,
+  LazyRouteFunction as LazyRouteFunctionOriginal,
+  LoaderFunctionArgs as LoaderFunctionArgsOriginal,
+  ActionFunctionArgs as ActionFunctionArgsOriginal,
+  DataFunctionReturnValue as DataFunctionReturnValueOriginal,
 } from "react-router-dom";
-
-import type {
-  LazyRouteFunction as OriginalLazyRouteFunction,
-  AgnosticBaseRouteObject as OriginalAgnosticBaseRouteObject,
-} from "@remix-run/router";
 
 import type { HandlerContext } from "@/app";
 
-type LoaderFunctionCustom<Context = unknown> = (
-  args: LoaderFunctionArgs<Context>,
-  handlerCtx: HandlerContext
-) => ReturnType<OriginalLoaderFunction>;
-
-type ActionFunctionCustom<Context = unknown> = (
-  args: ActionFunctionArgs<Context>,
-  handlerCtx: HandlerContext
-) => ReturnType<OriginalActionFunction>;
-
 declare module "react-router-dom" {
-  type LoaderFunction<Context = unknown> = LoaderFunctionCustom<Context>;
-  type ActionFunction<Context = unknown> = ActionFunctionCustom<Context>;
-
-  interface IndexRouteObject extends OriginalIndexRouteObject {
-    loader?: LoaderFunction;
-    action?: ActionFunction;
-    lazy?: OriginalLazyRouteFunction<IndexRouteObject>;
-  }
-
-  interface NonIndexRouteObject extends OriginalNonIndexRouteObject {
-    loader?: LoaderFunction;
-    action?: ActionFunction;
-    lazy?: OriginalLazyRouteFunction<NonIndexRouteObject>;
-  }
-}
-
-type AgnosticBaseRouteObject = OriginalAgnosticBaseRouteObject & {
-  loader?: LoaderFunctionCustom | boolean;
-  action?: ActionFunctionCustom | boolean;
-  lazy?: LazyRouteFunction<AgnosticBaseRouteObject>;
-};
-
-declare module "@remix-run/router" {
-  type AgnosticIndexRouteObject = AgnosticBaseRouteObject & {
-    children?: undefined;
-    index: true;
+  /**
+   * Route loader function signature
+   */
+  type LoaderFunction<Context = unknown> = {
+    (
+      args: LoaderFunctionArgsOriginal<Context>,
+      handlerCtx: HandlerContext
+    ): DataFunctionReturnValueOriginal;
+  } & {
+    hydrate?: boolean;
   };
+  /**
+   * Route action function signature
+   */
+  interface ActionFunction<Context = unknown> {
+    (
+      args: ActionFunctionArgsOriginal<Context>,
+      handlerCtx: HandlerContext
+    ): DataFunctionReturnValueOriginal;
+  }
+
+  type IndexRouteObject = {
+    caseSensitive?: AgnosticIndexRouteObjectOriginal["caseSensitive"];
+    path?: AgnosticIndexRouteObjectOriginal["path"];
+    id?: AgnosticIndexRouteObjectOriginal["id"];
+    loader?: LoaderFunction;
+    action?: ActionFunction;
+    hasErrorBoundary?: AgnosticIndexRouteObjectOriginal["hasErrorBoundary"];
+    shouldRevalidate?: AgnosticIndexRouteObjectOriginal["shouldRevalidate"];
+    handle?: AgnosticIndexRouteObjectOriginal["handle"];
+    index: true;
+    children?: undefined;
+    element?: React.ReactNode | null;
+    hydrateFallbackElement?: React.ReactNode | null;
+    errorElement?: React.ReactNode | null;
+    Component?: React.ComponentType | null;
+    HydrateFallback?: React.ComponentType | null;
+    ErrorBoundary?: React.ComponentType | null;
+    lazy?: LazyRouteFunctionOriginal<RouteObject>;
+  };
+
+  type NonIndexRouteObject = {
+    caseSensitive?: AgnosticNonIndexRouteObjectOriginal["caseSensitive"];
+    path?: AgnosticNonIndexRouteObjectOriginal["path"];
+    id?: AgnosticNonIndexRouteObjectOriginal["id"];
+    loader?: LoaderFunction;
+    action?: ActionFunction;
+    hasErrorBoundary?: AgnosticNonIndexRouteObjectOriginal["hasErrorBoundary"];
+    shouldRevalidate?: AgnosticNonIndexRouteObjectOriginal["shouldRevalidate"];
+    handle?: AgnosticNonIndexRouteObjectOriginal["handle"];
+    index?: false;
+    children?: RouteObject[];
+    element?: React.ReactNode | null;
+    hydrateFallbackElement?: React.ReactNode | null;
+    errorElement?: React.ReactNode | null;
+    Component?: React.ComponentType | null;
+    HydrateFallback?: React.ComponentType | null;
+    ErrorBoundary?: React.ComponentType | null;
+    lazy?: LazyRouteFunctionOriginal<RouteObject>;
+  };
+
+  type RouteObject = IndexRouteObject | NonIndexRouteObject;
 }
