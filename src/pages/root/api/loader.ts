@@ -1,7 +1,7 @@
-import { makeLoader } from "react-router-typesafe";
+import { makeLoader } from "@/shared/router";
 
 export const loader = makeLoader(() => {
-    return Promise.resolve({});
+  return Promise.resolve({});
 });
 
 export type Data = typeof loader;

@@ -3,7 +3,7 @@ import { Link as LinkRRD } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import { Link } from "@/shared/ui";
-import { ROUTES } from "@/shared/routes";
+import { ROUTES } from "@/shared/router";
 
 export const NoMatchPage: FC = () => {
   const { t } = useTranslation("notMatchRoute");

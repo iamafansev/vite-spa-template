@@ -1,5 +1,4 @@
-import { Link as LinkRRD } from "react-router-dom";
-import { useLoaderData } from "react-router-typesafe";
+import { Link as LinkRRD, useLoaderData } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 import { Link, Button } from "@/shared/ui";
@@ -10,6 +9,10 @@ import type { Data } from "../api/loader";
 
 import LogoIcon from "./vite.svg?react";
 import { useCallback } from "react";
+
+export function HydrateFallback() {
+  return <p>Loading Game...</p>;
+}
 
 export const HomePage = () => {
   const { t } = useTranslation("home");

@@ -1,6 +1,6 @@
 import type { RouteObject } from "react-router-dom";
 
-import { ROUTES } from "@/shared/routes";
+import { ROUTES } from "@/shared/router";
 
 export const routes: RouteObject[] = [
   {

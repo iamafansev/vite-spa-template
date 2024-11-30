@@ -1,29 +1,37 @@
-import { Outlet, useNavigation, ScrollRestoration } from "react-router-dom";
-import { useLoaderData } from "react-router-typesafe";
+import {
+  Outlet,
+  useNavigation,
+  ScrollRestoration,
+  useLoaderData,
+} from "react-router-dom";
 
 import { PageLoader, SubmittingOverlay } from "@/shared/ui";
 
 import type { Data } from "../api/loader";
 
-export const RootPage = () => {
-    useLoaderData<Data>();
-    const navigation = useNavigation();
+export function HydrateFallback() {
+  return <p>Loading Game...</p>;
+}
 
-    switch (navigation.state) {
-        case "idle":
-            return (
-                <div>
-                    <Outlet />
-                    <ScrollRestoration />
-                </div>
-            );
-        case "loading":
-            return <PageLoader />;
-        case "submitting":
-            return (
-                <SubmittingOverlay>
-                    <Outlet />
-                </SubmittingOverlay>
-            );
-    }
+export const RootPage = () => {
+  useLoaderData<Data>();
+  const navigation = useNavigation();
+
+  switch (navigation.state) {
+    case "idle":
+      return (
+        <div>
+          <Outlet />
+          <ScrollRestoration />
+        </div>
+      );
+    case "loading":
+      return <PageLoader />;
+    case "submitting":
+      return (
+        <SubmittingOverlay>
+          <Outlet />
+        </SubmittingOverlay>
+      );
+  }
 };

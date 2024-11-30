@@ -15,7 +15,7 @@ This is a client application built with Vite, React, React Router DOM, React-i18
 
 ## Features
 
-- Dynamic routing with `react-router-dom` using `loader` and `action` methods for data fetching and mutations.
+- Dynamic routing with `react-router-dom@7` using `loader` and `action` methods for data fetching and mutations.
 - Internationalization support using `react-i18next`.
 - State management and data fetching with `URQL`.
 - FSD architecture for improved scalability and maintainability.
@@ -149,7 +149,7 @@ Here’s a brief overview of how to implement them:
 
 ```javascript
 // ./pages/your-page/api/loader.ts
-import { makeLoader } from "react-router-typesafe";
+import { makeLoader } from "@/shared/router";
 
 import { mapResultSourseToPromise } from "@/shared/api/utils";
 
@@ -164,7 +164,7 @@ export type Data = typeof loader;
 
 ```javascript
 // ./pages/your-page/ui/YourPage.tsx
-import { makeLoader } from "react-router-typesafe";
+import { useLoaderData } from "react-router-dom";
 
 import type { Data } from "../api/loader";
 
@@ -178,7 +178,7 @@ export const YourPage = () => {
 - Action: The action function is used for handling form submissions or other mutations.
 
 ```javascript
-import { makeAction } from "react-router-typesafe";
+import { makeAction } from "@/shared/router";
 
 import { mapResultSourseToPromise } from "@/shared/api/utils";
 
