@@ -1,3 +1,4 @@
 export { loader } from "./api/loader";
-export { RootPage as Component, HydrateFallback } from "./ui/RootPage";
-export { ErrorBoundary } from "@/shared/ui";
+export { RootPage } from "./ui/RootPage";
+export { NoFound } from "./ui/NotFound";
+export { ErrorBoundary } from "./ui/Error";
