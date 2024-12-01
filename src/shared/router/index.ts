@@ -1,2 +1,1 @@
-export { ROUTES } from "./routes";
-export * from "./lib";
+export type { RouterContext } from "./context";

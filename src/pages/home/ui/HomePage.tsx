@@ -1,23 +1,19 @@
-import { Link as LinkRRD, useLoaderData } from "react-router-dom";
+import { Link as LinkRR } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 
 import { Link, Button } from "@/shared/ui";
 
 import { useTheme } from "@/entities/theme";
 
-import type { Data } from "../api/loader";
+import { routeApi } from "../routeApi";
 
 import LogoIcon from "./vite.svg?react";
 import { useCallback } from "react";
 
-export function HydrateFallback() {
-  return <p>Loading Game...</p>;
-}
-
 export const HomePage = () => {
   const { t } = useTranslation("home");
   const { theme, setTheme } = useTheme();
-  const data = useLoaderData<Data>();
+  const data = routeApi.useLoaderData();
 
   const toggleTheme = useCallback(() => {
     if (theme === "dark") {
@@ -36,9 +32,9 @@ export const HomePage = () => {
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
         <Link asChild>
-          <LinkRRD to="/unknown" className="underline">
-            go to UNKNOWN (404) page
-          </LinkRRD>
+          <LinkRR to="/" className="underline">
+            go to home page
+          </LinkRR>
         </Link>
       </div>
       <Button type="button" onClick={toggleTheme} className="my-4">

@@ -1,7 +1,5 @@
-import { makeLoader } from "@/shared/router";
-
-export const loader = makeLoader(() => {
+export const loader = () => {
   return Promise.resolve({});
-});
+};
 
 export type Data = typeof loader;

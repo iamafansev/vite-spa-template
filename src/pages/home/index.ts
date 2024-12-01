@@ -1,3 +1,8 @@
-export { loader } from "./api/loader";
-export { HomePage as Component, HydrateFallback } from "./ui/HomePage";
-export { ErrorBoundary } from "@/shared/ui";
+import { createLazyRoute } from "@tanstack/react-router";
+
+import { routeApi } from "./routeApi";
+import { HomePage } from "./ui/HomePage";
+
+export const Route = createLazyRoute(routeApi.id)({
+  component: HomePage,
+});

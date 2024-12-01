@@ -1,11 +1,10 @@
 import type { FC } from "react";
-import { Link as LinkRRD } from "react-router-dom";
+import { Link as LinkRR } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 
 import { Link } from "@/shared/ui";
-import { ROUTES } from "@/shared/router";
 
-export const NoMatchPage: FC = () => {
+export const NoFound: FC = () => {
   const { t } = useTranslation("notMatchRoute");
 
   return (
@@ -13,10 +12,8 @@ export const NoMatchPage: FC = () => {
       <h1>{t("title")}</h1>
       <p>{t("description")}</p>
       <Link asChild>
-        <LinkRRD to={ROUTES.$buildPath({})}>Go home</LinkRRD>
+        <LinkRR to="/">Go home</LinkRR>
       </Link>
     </div>
   );
 };
-
-NoMatchPage.displayName = "NoMatchPage";
