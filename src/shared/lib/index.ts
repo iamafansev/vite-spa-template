@@ -1,1 +1,1 @@
-export { isError } from "./error";
+export { isError, isResponseError } from "./error";
