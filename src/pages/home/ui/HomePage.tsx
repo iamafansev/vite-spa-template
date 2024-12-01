@@ -48,5 +48,3 @@ export const HomePage = () => {
     </section>
   );
 };
-
-HomePage.displayName = "HomePage";
