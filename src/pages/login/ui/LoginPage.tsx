@@ -9,9 +9,12 @@ import { useTranslation } from "react-i18next";
 
 import { Button } from "@/shared/ui";
 
+import { routeApi } from "../routeApi";
+
 export const LoginPage = () => {
   const { t } = useTranslation("login");
   const navigate = useNavigate();
+  const { redirect } = routeApi.useSearch();
 
   const [loginValue, setLoginValue] = useState("");
 
@@ -26,9 +29,9 @@ export const LoginPage = () => {
     (event) => {
       event.preventDefault();
       localStorage.setItem("login", loginValue);
-      navigate({ to: "/" });
+      navigate({ to: redirect, replace: true });
     },
-    [loginValue, navigate]
+    [loginValue, redirect, navigate]
   );
 
   return (

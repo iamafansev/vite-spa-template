@@ -7,11 +7,15 @@ import {
 import { RootPage, NoFound, ErrorBoundary } from "@/pages/root";
 import { PageLoader } from "@/shared/ui";
 import { RouterContext } from "@/shared/router";
+import { initI18n } from "@/entities/i18n";
 
 export type { RouterContext };
 
 const rootRoute = createRootRouteWithContext<RouterContext>()({
   component: RootPage,
+  beforeLoad: () => {
+    return Promise.all([initI18n()]);
+  },
   notFoundComponent: NoFound,
   pendingComponent: PageLoader,
   errorComponent: ErrorBoundary,
@@ -26,6 +30,7 @@ const indexRoute = createRoute({
     if (!isAuthenticated) {
       throw redirect({
         to: "/login",
+        replace: true,
         search: {
           redirect: location.href,
         },
@@ -46,8 +51,18 @@ const loginRoute = createRoute({
     if (isAuthenticated) {
       throw redirect({
         to: "/",
+        replace: true,
       });
     }
+  },
+
+  validateSearch: (search: Record<string, unknown>): { redirect: string } => {
+    return {
+      redirect:
+        typeof search?.redirect === "string"
+          ? search?.redirect
+          : indexRoute.path,
+    };
   },
   pendingComponent: PageLoader,
 }).lazy(() => import("@/pages/login").then((d) => d.Route));
