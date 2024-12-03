@@ -8,6 +8,7 @@ import {
   Provider as ClientProvider,
 } from "urql";
 
+import { AbilityProvider, ability } from "@/entities/ability";
 import { ThemeProvider } from "@/entities/theme";
 
 import { createRouterWithContext } from "./router";
@@ -27,9 +28,13 @@ export const App = () => {
     <StrictMode>
       <HelmetProvider>
         <ThemeProvider>
-          <ClientProvider value={client}>
-            <RouterProvider router={createRouterWithContext({ client })} />
-          </ClientProvider>
+          <AbilityProvider value={ability}>
+            <ClientProvider value={client}>
+              <RouterProvider
+                router={createRouterWithContext({ client, ability })}
+              />
+            </ClientProvider>
+          </AbilityProvider>
         </ThemeProvider>
       </HelmetProvider>
     </StrictMode>

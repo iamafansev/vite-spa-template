@@ -16,6 +16,8 @@
     "docker:run": "docker rm -f docker-react && docker run --name docker-react -d -p 80:8082 docker-react"
   },
   "dependencies": {
+    "@casl/ability": "^6.7.2",
+    "@casl/react": "^4.0.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@tanstack/react-router": "^1.80.0",
     "class-variance-authority": "^0.7.0",

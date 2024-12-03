@@ -4,16 +4,25 @@ import {
   redirect,
 } from "@tanstack/react-router";
 
+import { AppAbility, updateAbility } from "@/entities/ability";
 import { RootPage, NoFound, ErrorBoundary } from "@/pages/root";
 import { PageLoader } from "@/shared/ui";
-import { RouterContext } from "@/shared/router";
 import { initI18n } from "@/entities/i18n";
 
-export type { RouterContext };
+import type { Client } from "urql";
+
+export type RouterContext = {
+  ability: AppAbility;
+  client: Client;
+};
 
 const rootRoute = createRootRouteWithContext<RouterContext>()({
   component: RootPage,
-  beforeLoad: () => {
+  beforeLoad: ({ context }) => {
+    const userLogin = localStorage.getItem("login");
+
+    updateAbility(context.ability, userLogin);
+
     return Promise.all([initI18n()]);
   },
   notFoundComponent: NoFound,
@@ -24,10 +33,8 @@ const rootRoute = createRootRouteWithContext<RouterContext>()({
 const indexRoute = createRoute({
   path: "/",
   getParentRoute: () => rootRoute,
-  beforeLoad: ({ location }) => {
-    const isAuthenticated = localStorage.getItem("login");
-
-    if (!isAuthenticated) {
+  beforeLoad: ({ location, context }) => {
+    if (context.ability.cannot("read", "all")) {
       throw redirect({
         to: "/login",
         replace: true,
@@ -45,10 +52,8 @@ const indexRoute = createRoute({
 const loginRoute = createRoute({
   path: "/login",
   getParentRoute: () => rootRoute,
-  beforeLoad: () => {
-    const isAuthenticated = localStorage.getItem("login");
-
-    if (isAuthenticated) {
+  beforeLoad: ({ context }) => {
+    if (context.ability.can("read", "all")) {
       throw redirect({
         to: "/",
         replace: true,

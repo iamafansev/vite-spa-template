@@ -2,7 +2,6 @@ import { Link as LinkRR } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 
 import { Link, Button } from "@/shared/ui";
-
 import { useTheme } from "@/entities/theme";
 
 import { routeApi } from "../routeApi";

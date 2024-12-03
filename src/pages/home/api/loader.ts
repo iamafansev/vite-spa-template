@@ -1,6 +1,6 @@
 import { mapResultSourseToPromise } from "@/shared/api/utils";
 
-import { RouterContext } from "@/shared/router";
+import { RouterContext } from "@/app/router/routes";
 import { GetHomePageDataQuery } from "./queries";
 
 export const loader = async (context: RouterContext) => {
