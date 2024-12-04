@@ -1,4 +1,4 @@
-import { Link as LinkRR } from "@tanstack/react-router";
+import { Link as LinkRR, useRouter } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 
 import { Link, Button } from "@/shared/ui";
@@ -9,9 +9,34 @@ import { routeApi } from "../routeApi";
 import LogoIcon from "./vite.svg?react";
 import { useCallback } from "react";
 
+const RefetchButton = () => {
+  const router = useRouter();
+  const { isFetching } = routeApi.useMatch();
+
+  const refetchData = useCallback(() => {
+    router.invalidate({
+      filter: (value) => {
+        return value.id === routeApi.id;
+      },
+    });
+  }, [router]);
+
+  return (
+    <Button
+      type="button"
+      onClick={refetchData}
+      loading={Boolean(isFetching)}
+      className="my-4"
+    >
+      reload data
+    </Button>
+  );
+};
+
 export const HomePage = () => {
   const { t } = useTranslation("home");
   const { theme, setTheme } = useTheme();
+
   const data = routeApi.useLoaderData();
 
   const toggleTheme = useCallback(() => {
@@ -39,6 +64,7 @@ export const HomePage = () => {
       <Button type="button" onClick={toggleTheme} className="my-4">
         toggle theme
       </Button>
+      <RefetchButton />
       <ul>
         {data.getAllPokemon.map(({ key }) => (
           <li key={key}>{key}</li>
