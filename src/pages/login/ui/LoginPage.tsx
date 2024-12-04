@@ -1,9 +1,4 @@
-import {
-  useCallback,
-  useState,
-  ChangeEventHandler,
-  FormEventHandler,
-} from "react";
+import { useCallback, FormEventHandler } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 
@@ -16,22 +11,22 @@ export const LoginPage = () => {
   const navigate = useNavigate();
   const { redirect } = routeApi.useSearch();
 
-  const [loginValue, setLoginValue] = useState("");
-
-  const onChangeLogin = useCallback<ChangeEventHandler<HTMLInputElement>>(
-    (event) => {
-      setLoginValue(event.target.value);
-    },
-    []
-  );
-
   const submitForm = useCallback<FormEventHandler>(
     (event) => {
       event.preventDefault();
-      localStorage.setItem("login", loginValue);
+      event.stopPropagation();
+      const formData = new FormData(event.target as HTMLFormElement);
+
+      const login = formData.get("login") as string;
+
+      if (!login) {
+        return;
+      }
+
+      localStorage.setItem("login", login);
       navigate({ to: redirect, replace: true });
     },
-    [loginValue, redirect, navigate]
+    [redirect, navigate]
   );
 
   return (
@@ -40,12 +35,7 @@ export const LoginPage = () => {
       <form className="flex flex-col mt-10 text-center" onSubmit={submitForm}>
         <label className="flex flex-col text-left">
           {t("loginLabel")}
-          <input
-            id="login"
-            name="login"
-            onChange={onChangeLogin}
-            value={loginValue}
-          />
+          <input id="login" name="login" />
         </label>
         <Button type="submit" className="mt-4">
           {t("submit")}
