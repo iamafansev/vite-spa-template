@@ -1,1 +1,2 @@
-export { isError, isResponseError } from "./error";
+export * from "./error";
+export * from "./time";

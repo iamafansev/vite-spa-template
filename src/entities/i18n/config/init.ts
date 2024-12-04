@@ -6,6 +6,10 @@ import LanguageDetector, {
 } from "i18next-browser-languagedetector";
 
 export const initI18n = async () => {
+  if (i18n.isInitialized) {
+    return;
+  }
+
   return i18n
     .use(LanguageDetector)
     .use(HttpApi)
