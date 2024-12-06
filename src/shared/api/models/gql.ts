@@ -14,7 +14,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 const documents = {
-    "\n  query GetHomePageData {\n    getAllPokemon(offset: 0, take: 10) {\n      key\n    }\n  }\n": types.GetHomePageDataDocument,
+    "\n  query GetHomePageData($offset: Int!, $take: Int!) {\n    getAllPokemon(offset: $offset, take: $take) {\n      key\n    }\n  }\n": types.GetHomePageDataDocument,
 };
 
 /**
@@ -34,7 +34,7 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query GetHomePageData {\n    getAllPokemon(offset: 0, take: 10) {\n      key\n    }\n  }\n"): (typeof documents)["\n  query GetHomePageData {\n    getAllPokemon(offset: 0, take: 10) {\n      key\n    }\n  }\n"];
+export function graphql(source: "\n  query GetHomePageData($offset: Int!, $take: Int!) {\n    getAllPokemon(offset: $offset, take: $take) {\n      key\n    }\n  }\n"): (typeof documents)["\n  query GetHomePageData($offset: Int!, $take: Int!) {\n    getAllPokemon(offset: $offset, take: $take) {\n      key\n    }\n  }\n"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

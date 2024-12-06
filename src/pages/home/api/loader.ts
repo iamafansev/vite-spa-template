@@ -1,17 +1,18 @@
 import { mapResultSourseToPromise } from "@/shared/api/utils";
-
-import { RouterContext } from "@/app/router/routes";
-import { sleep } from "@/shared/utils";
+import { makeLoaderByPath } from "@/shared/lib";
 
 import { GetHomePageDataQuery } from "./queries";
+import { routeApi } from "../config/routeApi";
 
-export const loader = async (context: RouterContext) => {
-  await sleep(1000);
-  const resultSource = context.client.query(
-    GetHomePageDataQuery,
-    {},
-    { requestPolicy: "network-only" }
-  );
+const makeLoader = makeLoaderByPath<typeof routeApi.id>();
+
+export const loader = makeLoader(async ({ context, search }) => {
+  const page = search.page || 1;
+
+  const resultSource = context.client.query(GetHomePageDataQuery, {
+    offset: (page - 1) * 10,
+    take: page * 10,
+  });
 
   return mapResultSourseToPromise(resultSource);
-};
+});

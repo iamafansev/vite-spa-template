@@ -19,6 +19,7 @@ const getClient = () => {
     url: import.meta.env.VITE_API_URL,
     exchanges: [cacheExchange, fetchExchange],
     suspense: true,
+    requestPolicy: "cache-and-network",
   });
 };
 

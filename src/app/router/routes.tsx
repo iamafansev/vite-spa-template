@@ -54,8 +54,19 @@ const authenticatedRoute = createRoute({
 const indexRoute = createRoute({
   path: "/",
   getParentRoute: () => authenticatedRoute,
+  validateSearch: (search: Record<string, unknown>): { page?: number } => {
+    return {
+      page: typeof search?.page === "number" ? search.page : undefined,
+    };
+  },
+  loaderDeps: ({ search: { page } }) => ({ page }),
   loader: (options) =>
-    import("@/pages/home/api/loader").then((d) => d.loader(options.context)),
+    import("@/pages/home/api/loader").then((d) =>
+      d.loader({
+        ...options,
+        search: options.deps,
+      })
+    ),
   pendingComponent: PageLoader,
 }).lazy(() => import("@/pages/home").then((d) => d.Route));
 
