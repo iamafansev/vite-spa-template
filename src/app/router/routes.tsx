@@ -21,6 +21,10 @@ export type RouterContext = {
 
 const rootRoute = createRootRouteWithContext<RouterContext>()({
   component: RootPage,
+  beforeLoad: ({ context }) => {
+    const userLogin = localStorage.getItem("login");
+    updateAbility(context.ability, userLogin);
+  },
   loader: () => {
     return Promise.all([initI18n()]);
   },
@@ -35,9 +39,6 @@ const authenticatedRoute = createRoute({
   id: "authenticated",
   getParentRoute: () => rootRoute,
   beforeLoad: ({ location, context }) => {
-    const userLogin = localStorage.getItem("login");
-    updateAbility(context.ability, userLogin);
-
     if (context.ability.cannot("read", "all")) {
       throw redirect({
         to: "/login",
