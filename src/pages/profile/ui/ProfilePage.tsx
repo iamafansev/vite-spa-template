@@ -1,4 +1,4 @@
-import { routeApi } from "../routeApi";
+import { routeApi } from "../config/routeApi";
 
 export const ProfilePage = () => {
   const data = routeApi.useLoaderData();

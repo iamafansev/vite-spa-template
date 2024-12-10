@@ -21,6 +21,13 @@ export type RouterContext = {
 
 const rootRoute = createRootRouteWithContext<RouterContext>()({
   component: RootPage,
+  beforeLoad: () => {
+    return {
+      user: {
+        id: "123",
+      },
+    };
+  },
   loader: () => {
     return Promise.all([initI18n()]);
   },
