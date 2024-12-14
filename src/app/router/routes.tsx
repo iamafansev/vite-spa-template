@@ -101,23 +101,7 @@ const loginRoute = createRoute({
   pendingComponent: PageLoader,
 }).lazy(() => import("@/pages/login").then((d) => d.Route));
 
-const logoutRoute = createRoute({
-  path: "/logout",
-  getParentRoute: () => rootRoute,
-  beforeLoad: ({ context }) => {
-    updateAbility(context.ability, null);
-    localStorage.removeItem("login");
-
-    throw redirect({
-      to: "/",
-      replace: true,
-    });
-  },
-  pendingComponent: PageLoader,
-});
-
 export const routeTree = rootRoute.addChildren([
   authenticatedRoute.addChildren([profileRoute, indexRoute]),
   loginRoute,
-  logoutRoute,
 ]);

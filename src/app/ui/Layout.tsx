@@ -1,14 +1,35 @@
-import { FC } from "react";
-import { Link as LinkRR, Outlet } from "@tanstack/react-router";
+import { FC, useCallback } from "react";
+import { useFormStatus } from "react-dom";
+import { Link as LinkRR, Outlet, useRouter } from "@tanstack/react-router";
 import { LogOut, Sun, SunMoon, Moon } from "lucide-react";
 
 import { useTheme } from "@/entities/theme";
+import { updateAbility, useAbility } from "@/entities/ability";
 import { Button, Link } from "@/shared/ui";
+import { sleep } from "@/shared/utils";
+
+const LogoutAction: FC = () => {
+  const { pending } = useFormStatus();
+  return (
+    <Button type="submit" variant="ghost" loading={pending}>
+      <LogOut />
+    </Button>
+  );
+};
 
 export const AppLayout: FC = () => {
   const { theme, setTheme } = useTheme();
+  const ability = useAbility();
+  const router = useRouter();
 
   const userLogin = localStorage.getItem("login") || "No name";
+
+  const logoutAction = useCallback(async () => {
+    await sleep(1000);
+    localStorage.removeItem("login");
+    updateAbility(ability, null);
+    router.invalidate();
+  }, [ability, router]);
 
   return (
     <>
@@ -61,11 +82,9 @@ export const AppLayout: FC = () => {
               </Link>
             </li>
             <li>
-              <Button variant="ghost" asChild>
-                <LinkRR to="/logout">
-                  <LogOut />
-                </LinkRR>
-              </Button>
+              <form action={logoutAction}>
+                <LogoutAction />
+              </form>
             </li>
           </ul>
         </nav>
