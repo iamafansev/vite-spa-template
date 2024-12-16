@@ -6,7 +6,7 @@ import { LogOut, Sun, SunMoon, Moon } from "lucide-react";
 import { useTheme } from "@/entities/theme";
 import { updateAbility, useAbility } from "@/entities/ability";
 import { Button, Link } from "@/shared/ui";
-import { sleep } from "@/shared/utils";
+import { sleep } from "@/shared/lib";
 
 const LogoutAction: FC = () => {
   const { pending } = useFormStatus();

@@ -3,7 +3,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Loader2 } from "lucide-react";
 
-import { cn } from "@/shared/utils/cn";
+import { cn } from "@/shared/lib/cn";
 
 /**
  * Generates a set of class names for a button component based on the provided variant and size.

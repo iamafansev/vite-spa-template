@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 
-import { Button, SubmittingOverlay } from "@/shared/ui";
+import { Button, SubmittingOverlay, Dialog, useDialog } from "@/shared/ui";
 
 import { routeApi } from "../config/routeApi";
 
@@ -25,6 +25,7 @@ const Overlay: FC<PropsWithChildren> = ({ children }) => {
 
 export const HomePage = () => {
   const { t } = useTranslation("home");
+  const dialog = useDialog();
 
   const router = useRouter();
   const data = routeApi.useLoaderData();
@@ -45,6 +46,9 @@ export const HomePage = () => {
     <Overlay>
       <section className="flex flex-col items-center pt-32">
         <h1 className="font-bold text-4xl">{t("title")}</h1>
+        <Button type="button" onClick={dialog.open} className="my-4">
+          open dialog
+        </Button>
         <ul className="mt-10">
           {data.getAllPokemon.map(({ key }, index) => (
             <li key={key}>
@@ -61,6 +65,10 @@ export const HomePage = () => {
           reload data
         </Button>
       </section>
+      <Dialog ref={dialog.ref}>
+        <h2>Title</h2>
+        <p>Description</p>
+      </Dialog>
     </Overlay>
   );
 };

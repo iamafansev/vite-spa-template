@@ -1,0 +1,98 @@
+/* Solution for display animation. Makes a fadeout when the window closes. Less browser support */
+.dialogNew {
+  opacity: 0;
+  padding: 0px;
+  border: none;
+  min-width: 600px;
+  background-color: hsl(var(--popover));
+  border-radius: 18px;
+  color: inherit;
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out,
+    overlay 0.3s ease-out allow-discrete, display 0.3s ease-out allow-discrete;
+}
+
+.dialogNew[open] {
+  opacity: 1;
+}
+
+@starting-style {
+  .dialogNew[open] {
+    opacity: 0;
+  }
+}
+
+.dialogNew::backdrop {
+  opacity: 0;
+  background-color: hsl(var(--dialog-backdrop));
+  transition: display 0.3s allow-discrete, opacity 0.3s allow-discrete,
+    overlay 0.3s allow-discrete, background-color 0.3s;
+}
+
+.dialogNew[open]::backdrop {
+  opacity: 0.6;
+  background-color: hsl(var(--dialog-backdrop));
+}
+
+@starting-style {
+  .dialogNew[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+/* Full animation support for most browsers */
+.dialog {
+  padding: 0px;
+  border: none;
+  animation: fade-out 0.3s ease-out;
+  min-width: 600px;
+  background-color: hsl(var(--popover));
+  border-radius: 18px;
+  color: inherit;
+}
+
+.dialog[open] {
+  animation: fade-in 0.3s ease-out;
+}
+
+.dialog[open]::backdrop {
+  animation: backdrop-fade-in 0.3s ease-out forwards;
+}
+
+.dialog::backdrop {
+  background-color: hsl(var(--dialog-backdrop));
+  animation: backdrop-fade-in 0.3s ease-out forwards;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    display: none;
+  }
+
+  100% {
+    opacity: 1;
+    display: block;
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+    display: block;
+  }
+
+  100% {
+    opacity: 0;
+    display: none;
+  }
+}
+
+@keyframes backdrop-fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0.6;
+  }
+}

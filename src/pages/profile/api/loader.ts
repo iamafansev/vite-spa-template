@@ -1,4 +1,4 @@
-import { sleep } from "@/shared/utils";
+import { sleep } from "@/shared/lib";
 import { makeLoaderByPath } from "@/shared/lib";
 
 import { routeApi } from "../config/routeApi";

@@ -1,7 +1,7 @@
 import type { FC, HTMLAttributes } from "react";
 import { Loader2 } from "lucide-react";
 
-import { cn } from "@/shared/utils";
+import { cn } from "@/shared/lib";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   size?: number;

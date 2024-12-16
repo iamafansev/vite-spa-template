@@ -79,7 +79,7 @@ const profileRoute = createRoute({
 }).lazy(() => import("@/pages/profile").then((d) => d.Route));
 
 const loginRoute = createRoute({
-  path: "/login",
+  path: "login",
   getParentRoute: () => rootRoute,
   beforeLoad: ({ context }) => {
     if (context.ability.can("read", "all")) {

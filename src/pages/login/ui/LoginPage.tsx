@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/shared/ui";
 
 import { routeApi } from "../routeApi";
-import { sleep } from "@/shared/utils";
+import { sleep } from "@/shared/lib";
 
 const LoginFormContent: FC = () => {
   const { pending } = useFormStatus();

@@ -1,6 +1,6 @@
 import { type PropsWithChildren, type HTMLAttributes, forwardRef } from "react";
 
-import { cn } from "@/shared/utils";
+import { cn } from "@/shared/lib";
 
 import { Loader } from "../Loader/Loader";
 
