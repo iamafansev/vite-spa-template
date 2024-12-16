@@ -1,12 +1,9 @@
 import {
-  getRouteApi,
   useLoaderDeps,
   RegisteredRouter,
   useRouteContext,
   useParams,
 } from "@tanstack/react-router";
-
-export const routeApi = getRouteApi("/authenticated/");
 
 type LoaderFunction<TFrom extends string> = (options: {
   cause: "preload" | "enter" | "stay";
