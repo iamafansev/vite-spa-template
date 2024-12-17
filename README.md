@@ -244,6 +244,12 @@ export const HomePage = () => {
 };
 ```
 
+## Code generation
+
+To generate a new page, run the `npm run plop` command and follow the instructions.
+
+As a result of running the command, you will have a page module with a config, loader and ui, and the page will be added to `/app/router/routes.ts`
+
 ## Testing
 
 ### Writing Tests

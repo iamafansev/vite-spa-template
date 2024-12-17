@@ -52,32 +52,6 @@ const authenticatedRoute = createRoute({
   component: AppLayout,
 });
 
-const indexRoute = createRoute({
-  path: "/",
-  getParentRoute: () => authenticatedRoute,
-  validateSearch: (search: Record<string, unknown>): { page?: number } => {
-    return {
-      page: typeof search?.page === "number" ? search.page : undefined,
-    };
-  },
-  loaderDeps: ({ search: { page } }) => ({ page }),
-  loader: (options) =>
-    import("@/pages/home/api/loader").then((d) =>
-      d.loader({
-        ...options,
-        search: options.deps,
-      })
-    ),
-  pendingComponent: PageLoader,
-}).lazy(() => import("@/pages/home").then((d) => d.Route));
-
-const profileRoute = createRoute({
-  path: "profile",
-  getParentRoute: () => authenticatedRoute,
-  loader: () => import("@/pages/profile/api/loader").then((d) => d.loader()),
-  pendingComponent: PageLoader,
-}).lazy(() => import("@/pages/profile").then((d) => d.Route));
-
 const loginRoute = createRoute({
   path: "login",
   getParentRoute: () => rootRoute,
@@ -101,7 +75,45 @@ const loginRoute = createRoute({
   pendingComponent: PageLoader,
 }).lazy(() => import("@/pages/login").then((d) => d.Route));
 
+const indexRoute = createRoute({
+  path: "/",
+  getParentRoute: () => authenticatedRoute,
+  validateSearch: (search: Record<string, unknown>): { page?: number } => {
+    return {
+      page: typeof search?.page === "number" ? search.page : undefined,
+    };
+  },
+  loaderDeps: ({ search: { page } }) => ({ page }),
+  loader: (options) =>
+    import("@/pages/home/api/loader").then((d) =>
+      d.loader({
+        ...options,
+        search: options.deps,
+      })
+    ),
+  pendingComponent: PageLoader,
+}).lazy(() => import("@/pages/home").then((d) => d.Route));
+
+const profileRoute = createRoute({
+  path: "profile",
+  getParentRoute: () => authenticatedRoute,
+  loader: (options) =>
+    import("@/pages/profile/api/loader").then((d) =>
+      d.loader({
+        ...options,
+        search: options.deps,
+      })
+    ),
+  pendingComponent: PageLoader,
+}).lazy(() => import("@/pages/profile").then((d) => d.Route));
+
+/* THIS IS A PLACEHOLDER FOR APPEND NEW ROUTE BY THE GENERATOR. DO NOT DELETE! */
+
 export const routeTree = rootRoute.addChildren([
-  authenticatedRoute.addChildren([profileRoute, indexRoute]),
+  authenticatedRoute.addChildren([
+    indexRoute,
+    profileRoute,
+    /* THIS IS A PLACEHOLDER FOR APPEND ROUTE TO ROUTE TREE BY THE GENERATOR. DO NOT DELETE! */
+  ]),
   loginRoute,
 ]);

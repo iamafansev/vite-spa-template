@@ -1,0 +1,9 @@
+import { makeLoaderByPath } from "@/shared/lib";
+
+import { routeApi } from "../config/routeApi";
+
+const makeLoader = makeLoaderByPath<typeof routeApi.id>();
+
+export const loader = makeLoader(async (loaderOptions) => {
+  
+});

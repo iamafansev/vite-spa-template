@@ -1,0 +1,14 @@
+const {{ camelCase name }}Route = createRoute({
+  path: "{{ route }}",
+  getParentRoute: () => authenticatedRoute,
+  loader: (options) =>
+    import("@/pages/{{ name }}/api/loader").then((d) =>
+      d.loader({
+        ...options,
+        search: options.deps,
+      })
+    ),
+  pendingComponent: PageLoader,
+}).lazy(() => import("@/pages/{{ name }}").then((d) => d.Route));
+
+/* THIS IS A PLACEHOLDER FOR APPEND NEW ROUTE BY THE GENERATOR. DO NOT DELETE! */

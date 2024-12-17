@@ -1,0 +1,7 @@
+import { routeApi } from "../config/routeApi";
+
+export const {{ pascalCase name }}Page = () => {
+  const data = routeApi.useLoaderData();
+
+  return JSON.stringify(data);
+};

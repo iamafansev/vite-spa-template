@@ -5,7 +5,8 @@ import { routeApi } from "../config/routeApi";
 
 const makeLoader = makeLoaderByPath<typeof routeApi.id>();
 
-export const loader = makeLoader(async () => {
+export const loader = makeLoader(async (options) => {
+  console.log(options.cause);
   await sleep(500);
 
   return {
