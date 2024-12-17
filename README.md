@@ -8,17 +8,53 @@ This is a client application built with Vite, React, React Router DOM, React-i18
 
 - **Vite**: A fast front-end build tool that provides a modern development experience.
 - **React**: A JavaScript library for building user interfaces.
-- **React Router DOM**: A library for routing in React applications with support for data fetching and mutations using `loader` and `action` methods.
+- **@tanstack/react-router**: A fully type-safe React router with built-in data fetching, stale-while revalidate caching and first-class search-param APIs.
 - **React-i18next**: An internationalization framework for React that provides i18n capabilities.
 - **URQL**: A highly customizable and flexible GraphQL client for React.
 - **Feature-Sliced Design (FSD)**: An architectural approach that emphasizes slicing the application into features for better organization.
 
 ## Features
 
-- Dynamic routing with `react-router-dom@7` using `loader` and `action` methods for data fetching and mutations.
+- Dynamic routing with `@tanstack/react-router` with data fetching, methods for checking authorization and error handling.
+- CASL makes it easy to manage and share permissions across UI components
 - Internationalization support using `react-i18next`.
 - State management and data fetching with `URQL`.
 - FSD architecture for improved scalability and maintainability.
+
+## Directory Structure
+
+```
+public/                      # Assets
+├── ...
+└── locales/
+│   ├── {lng}/               # Lng
+│   │   ├── {ns}.json        # Namespace
+│   │   └── ...
+│   └── ...
+src/
+├── app/                     # Main application
+│   ├── router/
+│   │   ├── routes.ts        # Router tree with context description, data loaders, page access checks, etc.
+│   │   └── index            # Method of router initialization and configuration
+│   ├── entry.css            # Application entry styles
+│   └── index.ts             # Application component
+├── pages/                   # Pages displayed by the router
+│   ├── page1/
+│   │   ├── api/             # Methods for loading and mutating data, as well as queries
+│   │   ├── config/          # Page Configuration
+│   │   │   └── routeApi.ts  # Route API. Through the getRouteApi method we get all the types for our page through the route path.
+│   │   │                    # In the future, this API provides us with hooks for receiving various information, for example: data returned from    │   │   │                    # the loader, parameters and query parameters of the route, etc.
+│   │   ├── ui/              # Components and styles related to the page
+│   │   └── index            # Exporting a lazy route
+│   └── ...
+├── features/                # Feature slices
+│   ├── feature1/
+│   ├── feature2/
+│   └── ...
+├── shared/                  # Shared components and utilities
+├── init.tsx                 # Init application
+└── index.ts                 # Application entry point
+```
 
 ## Getting Started
 
@@ -128,70 +164,84 @@ export const YourComponent = () => {
 };
 ```
 
-Note: Hot reloading is not available within locales. Therefore, in order to see the changes, you need to reload the page.
+Note 1: Hot reloading is not available within locales. Therefore, in order to see the changes, you need to reload the page.
+Note 2: At the moment you can't use useTranslation together with useFormStatus from react-dom, otherwise you will start getting outdated forms. Assumption: this should be fixed when i18next supports react 19.
 
 ## Router Context
 
-- **Problem**: the loader and action do not have access to the react context, for example, to get the client to fetch data from the provider.
-- **Solution**: when creating createBrowserRouter, a context object is formed, which is inserted into all router handlers (loader and action) via dataStrategy as the second argument.
+The router context is passed through the router and down through each matching route. At each route in the hierarchy, the context can be modified or added to.
 
-See usage in the next section.
+### Interface:
 
-## Data Fetching and Mutations
+```ts
+export type RouterContext = {
+  ability: AppAbility;
+  client: Client;
+};
+```
 
-### Using Loader and Action Methods
+See usage in the [docs](https://tanstack.com/router/latest/docs/framework/react/guide/router-context).
 
-In this application, loader and action methods from react-router-dom are utilized for data fetching and mutations, respectively. These methods can accept a context argument, which is used to access the URQL client.
+## Data Fetching
+
+### Creating loader
+
+```ts
+import { getRouteApi } from "@tanstack/react-router";
+import { makeLoaderByPath } from "@/shared/lib";
+
+const routeApi = getRouteApi("/your-route");
+
+const makeLoader = makeLoaderByPath<typeof routeApi.id>();
+
+export const loader = makeLoader(async ({ context, search, params, cause }) => {
+  // ...
+};
+```
+
+Thanks to the `makeLoaderByPath` method we can get a function to create our loader with already typed values ​​such as: context, parameters, query parameters and the reason for calling the loader.
+
+### Using Loader
+
+In this application, loader method from react-router are utilized for data fetching, respectively. These methods can accept a context argument, which is used to access the URQL client.
 
 Here’s a brief overview of how to implement them:
 
 - Loader: The loader function is used to fetch data before rendering a route.
 
-```javascript
+```ts
 // ./pages/your-page/api/loader.ts
-import { makeLoader } from "@/shared/router";
-
 import { mapResultSourseToPromise } from "@/shared/api/utils";
+import { makeLoaderByPath } from "@/shared/lib";
 
-export const loader = makeLoader(async ({ request }, context) => {
-  const resultSource = context.client.query(YOUR_QUERY, {});
+import { GetHomePageDataQuery } from "./queries";
+import { routeApi } from "../config/routeApi";
 
-  return mapResultSourseToPromise(resultSource);
-});
+const makeLoader = makeLoaderByPath<typeof routeApi.id>();
 
-export type Data = typeof loader;
-```
+export const loader = makeLoader(async ({ context, search }) => {
+  const page = search.page || 1;
 
-```javascript
-// ./pages/your-page/ui/YourPage.tsx
-import { useLoaderData } from "react-router-dom";
-
-import type { Data } from "../api/loader";
-
-export const YourPage = () => {
-  const data = useLoaderData<Data>();
-
-  return JSON.stringify(data);
-};
-```
-
-- Action: The action function is used for handling form submissions or other mutations.
-
-```javascript
-import { makeAction } from "@/shared/router";
-
-import { mapResultSourseToPromise } from "@/shared/api/utils";
-
-export const action = makeAction(async ({ request }, context) => {
-  const formData = new URLSearchParams(await request.text());
-  const resultSource = await context.client.mutation(YOUR_MUTATION, {
-    input: formData.get("inputField"),
+  const resultSource = context.client.query(GetHomePageDataQuery, {
+    offset: (page - 1) * 10,
+    take: page * 10,
   });
 
   return mapResultSourseToPromise(resultSource);
 });
+```
 
-export type ActionData = typeof action;
+Getting data using useLoaderData:
+
+```tsx
+// ./pages/your-page/ui/YourPage.tsx
+import { routeApi } from "../config/routeApi";
+
+export const HomePage = () => {
+  const data = routeApi.useLoaderData();
+
+  return JSON.stringify(data);
+};
 ```
 
 ## Testing
@@ -244,37 +294,6 @@ To build and run the application using Docker, follow these steps:
    ```
 
 This will build the application and serve it using Nginx on port 8082.
-
-## Directory Structure
-
-```
-public/                # Assets
-├── ...
-└── locales/
-│   ├── {lng}/         # Lng
-│       ├── {ns}.json  # Namespace
-│       └── ...
-│   └── ...
-src/
-├── app/               # Main application
-│   ├── routes/
-│       └── index      # App routes
-│   ├── entry.css      # Application entry styles
-│   └── index.ts       # Application component
-├── pages/             # Pages displayed by the router
-│   ├── page1/
-│       ├── api/       # Methods for loading and mutating data, as well as queries
-│       ├── ui/        # Components and styles related to the page
-│       └── index      # Export only the keys you would define in the route object, such as `loader`, `action`, `Component`, `ErrorBoundary`, etc.
-│   └── ...
-├── features/          # Feature slices
-│   ├── feature1/
-│   ├── feature2/
-│   └── ...
-├── shared/            # Shared components and utilities
-├── init.tsx           # Init application
-└── index.ts           # Application entry point
-```
 
 ## Contributing
 
