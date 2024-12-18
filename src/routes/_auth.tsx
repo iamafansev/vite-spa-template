@@ -1,6 +1,12 @@
+import {
+  createFileRoute,
+  redirect,
+  Link as LinkRR,
+  Outlet,
+  useRouter,
+} from "@tanstack/react-router";
 import { FC, useCallback } from "react";
 import { useFormStatus } from "react-dom";
-import { Link as LinkRR, Outlet, useRouter } from "@tanstack/react-router";
 import { LogOut, Sun, SunMoon, Moon } from "lucide-react";
 
 import { useTheme } from "@/entities/theme";
@@ -93,3 +99,18 @@ export const AppLayout: FC = () => {
     </>
   );
 };
+
+export const Route = createFileRoute("/_auth")({
+  component: AppLayout,
+  beforeLoad: ({ location, context }) => {
+    if (context.ability.cannot("read", "all")) {
+      throw redirect({
+        to: "/login",
+        replace: true,
+        search: {
+          redirect: location.href,
+        },
+      });
+    }
+  },
+});

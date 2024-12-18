@@ -1,0 +1,4 @@
+{
+  "autoCodeSplitting": true,
+  "routesDirectory": "./src/routes"
+}

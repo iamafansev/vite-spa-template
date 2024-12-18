@@ -4,5 +4,8 @@
   "[handlebars]": {
     "editor.formatOnSave": false
   },
-  "editor.tabCompletion": "on"
+  "editor.tabCompletion": "on",
+  "files.watcherExclude": {
+    "**/routeTree.gen.ts": true
+  }
 }

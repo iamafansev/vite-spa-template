@@ -49,6 +49,7 @@
     "@react-router/dev": "^7.0.1",
     "@tanstack/eslint-plugin-router": "^1.82.12",
     "@tanstack/router-devtools": "^1.85.0",
+    "@tanstack/router-plugin": "^1.91.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.1.0",

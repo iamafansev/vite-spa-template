@@ -5,9 +5,13 @@ import svgr from "vite-plugin-svgr";
 import { VitePWA } from "vite-plugin-pwa";
 import codegen from "vite-plugin-graphql-codegen";
 import tsconfigPaths from "vite-tsconfig-paths";
+import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
 
 import manifest from "./manifest.json";
 import { getCodegenConfig } from "./codegen";
+
+// vitest automatically sets NODE_ENV to 'test' when running tests
+const isTest = process.env.NODE_ENV === "test";
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
@@ -16,6 +20,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [
+      !isTest && TanStackRouterVite(),
       react(),
       tsconfigPaths(),
       webfontDownload(),

@@ -6,7 +6,7 @@ import tseslint from "typescript-eslint";
 import pluginRouter from "@tanstack/eslint-plugin-router";
 
 export default tseslint.config(
-  { ignores: ["dist", "dev-dist", "./src/@types/"] },
+  { ignores: ["dist", "dev-dist", "./src/@types/", "**/routeTree.gen.ts"] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],
