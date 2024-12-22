@@ -1,3 +1,5 @@
+import type { QueryClient } from "react-query";
+import type { Client } from "openapi-fetch";
 import { createRootRouteWithContext } from "@tanstack/react-router";
 
 import { RootPage, NoFound, ErrorBoundary } from "@/pages/root";
@@ -5,12 +7,12 @@ import { AppAbility, updateAbility } from "@/entities/ability";
 import { PageLoader } from "@/shared/ui";
 import { MINUTE } from "@/shared/lib";
 import { initI18n } from "@/entities/i18n";
-
-import type { Client } from "urql";
+import type { paths } from "@/shared/api/v1";
 
 export type RouterContext = {
   ability: AppAbility;
-  client: Client;
+  queryClient: QueryClient;
+  fetchClient: Client<paths>;
 };
 
 export const Route = createRootRouteWithContext<RouterContext>()({

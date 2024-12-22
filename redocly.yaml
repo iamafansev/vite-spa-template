@@ -1,0 +1,5 @@
+apis:
+  stapi@v1:
+    root: https://stapi.co/api/v1/rest/common/download/stapi.yaml
+    x-openapi-ts:
+      output: ./src/shared/api/v1.d.ts

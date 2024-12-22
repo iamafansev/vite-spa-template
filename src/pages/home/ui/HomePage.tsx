@@ -42,6 +42,8 @@ export const HomePage = () => {
     });
   }, [router]);
 
+  console.log("data", data);
+
   return (
     <Overlay>
       <section className="flex flex-col items-center pt-32">
@@ -49,13 +51,13 @@ export const HomePage = () => {
         <Button type="button" onClick={dialog.open} className="my-4">
           open dialog
         </Button>
-        <ul className="mt-10">
+        {/* <ul className="mt-10">
           {data.getAllPokemon.map(({ key }, index) => (
             <li key={key}>
               {index + 1}: {key}
             </li>
           ))}
-        </ul>
+        </ul> */}
         <Button asChild className="my-4">
           <LinkRR to="/" search={{ page: currentPage + 1 }}>
             {t("fetchMore")}
