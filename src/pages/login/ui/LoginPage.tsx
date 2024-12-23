@@ -1,9 +1,9 @@
 import { FC, useCallback } from "react";
 import { useFormStatus } from "react-dom";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 
-import { Button } from "@/shared/ui";
+import { Button, SubmittingOverlay } from "@/shared/ui";
 
 import { routeApi } from "../config/routeApi";
 import { sleep } from "@/shared/lib";
@@ -29,6 +29,10 @@ export const LoginPage = () => {
   const navigate = useNavigate();
   const { redirect } = routeApi.useSearch();
 
+  const isLoading = useRouterState({
+    select: (state) => state.isLoading,
+  });
+
   const loginAction = useCallback(
     async (formData: FormData) => {
       const login = formData.get("login");
@@ -46,11 +50,13 @@ export const LoginPage = () => {
   );
 
   return (
-    <section className="flex flex-col items-center pt-32">
-      <h1 className="font-bold text-4xl">{t("title")}</h1>
-      <form className="flex flex-col mt-10 text-center" action={loginAction}>
-        <LoginFormContent />
-      </form>
-    </section>
+    <SubmittingOverlay className="static" processing={isLoading}>
+      <section className="flex flex-col items-center pt-32">
+        <h1 className="font-bold text-4xl">{t("title")}</h1>
+        <form className="flex flex-col mt-10 text-center" action={loginAction}>
+          <LoginFormContent />
+        </form>
+      </section>
+    </SubmittingOverlay>
   );
 };

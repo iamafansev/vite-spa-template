@@ -18,8 +18,8 @@ export const Route = createFileRoute("/_auth/")({
   },
   loaderDeps: ({ search }) => search,
   loader: async ({ context: { queryClient, fetchClient }, deps }) => {
-    const pageNumber = deps.page || 1;
-    const pageSize = deps.pageSize || 20;
+    const pageNumber = deps.page || 0;
+    const pageSize = deps.pageSize || 10;
     const name = deps.name || undefined;
 
     const result = await queryClient.fetchQuery(

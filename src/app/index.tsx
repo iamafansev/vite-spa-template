@@ -4,7 +4,7 @@ import { RouterProvider } from "@tanstack/react-router";
 import createFetchClient from "openapi-fetch";
 import { QueryClient, QueryClientProvider } from "react-query";
 
-import type { paths } from "@/shared/api/v1";
+import type { paths } from "@/shared/api/stapi";
 
 import { AbilityProvider, ability } from "@/entities/ability";
 import { ThemeProvider } from "@/entities/theme";

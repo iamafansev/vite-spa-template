@@ -4,10 +4,16 @@ import { cn } from "@/shared/lib";
 
 import { Loader } from "../Loader/Loader";
 
-interface Props extends HTMLAttributes<HTMLDivElement>, PropsWithChildren {}
+interface Props extends HTMLAttributes<HTMLDivElement>, PropsWithChildren {
+  processing?: boolean;
+}
 
 const SubmittingOverlay = forwardRef<HTMLDivElement, Props>(
-  ({ children, className, ...rest }, ref) => {
+  ({ children, className, processing = true, ...rest }, ref) => {
+    if (!processing) {
+      return children;
+    }
+
     return (
       <div
         ref={ref}

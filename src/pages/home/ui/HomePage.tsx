@@ -1,27 +1,17 @@
-import { FC, PropsWithChildren, useCallback } from "react";
-import {
-  useRouter,
-  Link as LinkRR,
-  useRouterState,
-} from "@tanstack/react-router";
+import { useCallback } from "react";
+import { useRouter } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 
-import { Button, SubmittingOverlay, Dialog, useDialog } from "@/shared/ui";
+import {
+  Button,
+  Dialog,
+  useDialog,
+  DataTable,
+  SubmittingOverlay,
+} from "@/shared/ui";
 
 import { routeApi } from "../config/routeApi";
-
-const Overlay: FC<PropsWithChildren> = ({ children }) => {
-  const isLoading = useRouterState({
-    select: (state) => state.isLoading,
-  });
-  const { isFetching } = routeApi.useMatch();
-
-  return isFetching || isLoading ? (
-    <SubmittingOverlay className="static">{children}</SubmittingOverlay>
-  ) : (
-    children
-  );
-};
+import { columns } from "../config/table";
 
 export const HomePage = () => {
   const { t } = useTranslation("home");
@@ -29,10 +19,11 @@ export const HomePage = () => {
 
   const router = useRouter();
   const data = routeApi.useLoaderData();
-
   const search = routeApi.useSearch();
+  const { isFetching } = routeApi.useMatch();
 
-  const currentPage = search.page || 1;
+  const currentPage = search.page || 0;
+  const filterName = search.name;
 
   const refetchData = useCallback(() => {
     router.invalidate({
@@ -42,35 +33,71 @@ export const HomePage = () => {
     });
   }, [router]);
 
-  console.log("data", data);
+  const formAction = useCallback(
+    (formData: FormData) => {
+      const name = formData.get("name");
+
+      if (typeof name !== "string") {
+        return;
+      }
+
+      router.navigate({
+        to: "/",
+        search: (prevSearch) => ({ ...prevSearch, name: name || undefined }),
+      });
+    },
+    [router]
+  );
 
   return (
-    <Overlay>
+    <SubmittingOverlay className="static" processing={Boolean(isFetching)}>
       <section className="flex flex-col items-center pt-32">
         <h1 className="font-bold text-4xl">{t("title")}</h1>
-        <Button type="button" onClick={dialog.open} className="my-4">
-          open dialog
-        </Button>
-        {/* <ul className="mt-10">
-          {data.getAllPokemon.map(({ key }, index) => (
-            <li key={key}>
-              {index + 1}: {key}
-            </li>
-          ))}
-        </ul> */}
-        <Button asChild className="my-4">
-          <LinkRR to="/" search={{ page: currentPage + 1 }}>
-            {t("fetchMore")}
-          </LinkRR>
-        </Button>
+        <DataTable
+          columns={columns}
+          data={data.animals}
+          rowCount={data.page?.numberOfElements || -1}
+          pageCount={data.page?.totalPages}
+          nameValue={filterName}
+          pagination={
+            data.page
+              ? {
+                  pageSize: data.page.pageSize,
+                  pageIndex: data.page.pageNumber,
+                }
+              : undefined
+          }
+          formAction={formAction}
+          onPrevPage={() =>
+            router.navigate({
+              to: "/",
+              search: (prevSearch) => ({
+                ...prevSearch,
+                page: currentPage - 1,
+              }),
+            })
+          }
+          onNextPage={() =>
+            router.navigate({
+              to: "/",
+              search: (prevSearch) => ({
+                ...prevSearch,
+                page: currentPage + 1,
+              }),
+            })
+          }
+        />
         <Button type="button" onClick={refetchData} className="my-4">
           reload data
+        </Button>
+        <Button type="button" onClick={dialog.open}>
+          open dialog
         </Button>
       </section>
       <Dialog ref={dialog.ref}>
         <h2>Title</h2>
         <p>Description</p>
       </Dialog>
-    </Overlay>
+    </SubmittingOverlay>
   );
 };
