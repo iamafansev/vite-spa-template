@@ -14,7 +14,7 @@ import { routeApi } from "../config/routeApi";
 import { columns } from "../config/table";
 
 export const HomePage = () => {
-  const { t } = useTranslation("home");
+  const { t } = useTranslation("home-page");
   const dialog = useDialog();
 
   const router = useRouter();

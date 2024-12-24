@@ -1,0 +1,17 @@
+import { createFileRoute } from "@tanstack/react-router";
+
+import { {{ pascalCase name }}Page, pageQueryOptions } from "@/pages/{{ name }}";
+import { PageLoader } from "@/shared/ui";
+
+export const Route = createFileRoute("/_auth/{{route}}")({
+  component: {{ pascalCase name }}Page,
+  pendingComponent: PageLoader,
+  loaderDeps: ({ search }) => search,
+  loader: async ({ context: { queryClient, fetchClient }, deps }) => {
+    const result = await queryClient.fetchQuery(
+      pageQueryOptions(fetchClient, {params: undefined, body: undefined})
+    );
+
+    return result;
+  },
+});

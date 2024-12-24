@@ -1,8 +1,2 @@
-import { createLazyRoute } from "@tanstack/react-router";
-
-import { routeApi } from "./config/routeApi";
-import { {{pascalCase name}}Page } from "./ui/{{pascalCase name}}Page";
-
-export const Route = createLazyRoute(routeApi.id)({
-  component: {{pascalCase name}}Page,
-});
+export * from "./ui/{{pascalCase name}}Page";
+export * from "./api/queries";
