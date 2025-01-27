@@ -7,10 +7,8 @@ export const Route = createFileRoute("/_auth/{{route}}")({
   component: {{ pascalCase name }}Page,
   pendingComponent: PageLoader,
   loaderDeps: ({ search }) => search,
-  loader: async ({ context: { queryClient, fetchClient }, deps }) => {
-    const result = await queryClient.fetchQuery(
-      pageQueryOptions(fetchClient, {params: undefined, body: undefined})
-    );
+  loader: async ({ context: { queryClient, openapiQueryClient }, deps }) => {
+    const result = await queryClient.fetchQuery();
 
     return result;
   },

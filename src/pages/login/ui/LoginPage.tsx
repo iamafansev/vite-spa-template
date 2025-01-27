@@ -25,7 +25,7 @@ const LoginFormContent: FC = () => {
 };
 
 export const LoginPage = () => {
-  const { t } = useTranslation("login");
+  const { t } = useTranslation("login-page");
   const navigate = useNavigate();
   const { redirect } = routeApi.useSearch();
 

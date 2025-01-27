@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { HomePage, animalsQueryOptions } from "@/pages/home";
+import { HomePage } from "@/pages/home";
 import { PageLoader } from "@/shared/ui";
 
 export const Route = createFileRoute("/_auth/")({
@@ -17,15 +17,31 @@ export const Route = createFileRoute("/_auth/")({
     };
   },
   loaderDeps: ({ search }) => search,
-  loader: async ({ context: { queryClient, fetchClient }, deps }) => {
+  loader: async ({ context: { queryClient, openapiQueryClient }, deps }) => {
     const pageNumber = deps.page || 0;
     const pageSize = deps.pageSize || 10;
     const name = deps.name || undefined;
+    const body = { name };
 
     const result = await queryClient.fetchQuery(
-      animalsQueryOptions(fetchClient, {
-        params: { pageSize, pageNumber },
-        body: { name },
+      openapiQueryClient.queryOptions("post", "/v1/rest/animal/search", {
+        params: { query: { pageSize, pageNumber } },
+        body,
+        bodySerializer: (body) => {
+          const params = new URLSearchParams();
+
+          if (!body) return params;
+
+          for (const [paramName, paramValue] of Object.entries(body)) {
+            if (paramValue !== undefined) {
+              params.append(paramName, paramValue.toString());
+            }
+          }
+          return params;
+        },
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+        },
       })
     );
 

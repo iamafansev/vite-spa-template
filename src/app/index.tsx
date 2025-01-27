@@ -1,14 +1,11 @@
-import { StrictMode } from "react";
-import { HelmetProvider } from "react-helmet-async";
-import { RouterProvider } from "@tanstack/react-router";
 import createFetchClient from "openapi-fetch";
-import { QueryClient, QueryClientProvider } from "react-query";
+import createOpenApiClient from "openapi-react-query";
+import { QueryClient } from "@tanstack/react-query";
+import { RouterProvider } from "@tanstack/react-router";
 
 import type { paths } from "@/shared/api/stapi";
 
-import { AbilityProvider, ability } from "@/entities/ability";
-import { ThemeProvider } from "@/entities/theme";
-import { ClientFetchProvider } from "@/entities/fetchClient";
+import { ability } from "@/entities/ability";
 
 import { createRouterWithContext } from "./router";
 import "./entry.css";
@@ -22,26 +19,16 @@ const getFetchClient = () => {
 export const App = () => {
   const fetchClient = getFetchClient();
   const queryClient = new QueryClient();
+  const openapiQueryClient = createOpenApiClient(fetchClient);
 
   return (
-    <StrictMode>
-      <HelmetProvider>
-        <ThemeProvider>
-          <AbilityProvider value={ability}>
-            <ClientFetchProvider value={fetchClient}>
-              <QueryClientProvider client={queryClient}>
-                <RouterProvider
-                  router={createRouterWithContext({
-                    fetchClient,
-                    queryClient,
-                    ability,
-                  })}
-                />
-              </QueryClientProvider>
-            </ClientFetchProvider>
-          </AbilityProvider>
-        </ThemeProvider>
-      </HelmetProvider>
-    </StrictMode>
+    <RouterProvider
+      router={createRouterWithContext({
+        fetchClient,
+        queryClient,
+        openapiQueryClient,
+        ability,
+      })}
+    />
   );
 };
