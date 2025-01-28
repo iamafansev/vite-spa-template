@@ -8,8 +8,6 @@ export const Route = createFileRoute("/_auth/{{route}}")({
   pendingComponent: PageLoader,
   loaderDeps: ({ search }) => search,
   loader: async ({ context: { queryClient, openapiQueryClient }, deps }) => {
-    const result = await queryClient.fetchQuery();
-
-    return result;
+    return {};
   },
 });

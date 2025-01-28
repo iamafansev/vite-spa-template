@@ -18,7 +18,13 @@ const getFetchClient = () => {
 
 export const App = () => {
   const fetchClient = getFetchClient();
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 5 * 60 * 1000,
+      },
+    },
+  });
   const openapiQueryClient = createOpenApiClient(fetchClient);
 
   return (

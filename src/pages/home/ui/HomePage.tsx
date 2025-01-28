@@ -1,5 +1,6 @@
 import { useCallback } from "react";
-import { useRouter } from "@tanstack/react-router";
+import { useRouter, useRouteContext } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
 import {
@@ -18,20 +19,26 @@ export const HomePage = () => {
   const dialog = useDialog();
 
   const router = useRouter();
+  const routerContext = useRouteContext({
+    from: "__root__",
+  });
   const data = routeApi.useLoaderData();
   const search = routeApi.useSearch();
   const { isFetching } = routeApi.useMatch();
+  const client = useQueryClient();
 
   const currentPage = search.page || 0;
   const filterName = search.name;
 
   const refetchData = useCallback(() => {
-    router.invalidate({
-      filter: (value) => {
-        return value.id === routeApi.id;
-      },
-    });
-  }, [router]);
+    client.invalidateQueries(
+      routerContext.openapiQueryClient.queryOptions(
+        "post",
+        "/v1/rest/animal/search"
+      )
+    );
+    router.invalidate();
+  }, [routerContext, router, client]);
 
   const formAction = useCallback(
     (formData: FormData) => {
@@ -44,13 +51,19 @@ export const HomePage = () => {
       router.navigate({
         to: "/",
         search: (prevSearch) => ({ ...prevSearch, name: name || undefined }),
+        mask: {
+          to: "/",
+          search: (prevSearch) => ({
+            page: prevSearch.pageSize,
+          }),
+        },
       });
     },
     [router]
   );
 
   return (
-    <SubmittingOverlay className="static" processing={Boolean(isFetching)}>
+    <SubmittingOverlay processing={Boolean(isFetching)}>
       <section className="flex flex-col items-center pt-32">
         <h1 className="font-bold text-4xl">{t("title")}</h1>
         <DataTable
@@ -75,6 +88,12 @@ export const HomePage = () => {
                 ...prevSearch,
                 page: currentPage - 1,
               }),
+              mask: {
+                to: "/",
+                search: {
+                  page: currentPage - 1,
+                },
+              },
             })
           }
           onNextPage={() =>
@@ -84,6 +103,12 @@ export const HomePage = () => {
                 ...prevSearch,
                 page: currentPage + 1,
               }),
+              mask: {
+                to: "/",
+                search: {
+                  page: currentPage + 1,
+                },
+              },
             })
           }
         />
