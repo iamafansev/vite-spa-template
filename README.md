@@ -10,7 +10,7 @@ This is a client application built with Vite, React, React Router DOM, React-i18
 - **React**: A JavaScript library for building user interfaces.
 - **@tanstack/react-router**: A fully type-safe React router with built-in data fetching, stale-while revalidate caching and first-class search-param APIs.
 - **React-i18next**: An internationalization framework for React that provides i18n capabilities.
-- **URQL**: A highly customizable and flexible GraphQL client for React.
+- **@tanstack/query**: A highly customizable and flexible client for React.
 - **Feature-Sliced Design (FSD)**: An architectural approach that emphasizes slicing the application into features for better organization.
 
 ## Features
@@ -18,7 +18,7 @@ This is a client application built with Vite, React, React Router DOM, React-i18
 - Dynamic routing with `@tanstack/react-router` with data fetching, methods for checking authorization and error handling.
 - CASL makes it easy to manage and share permissions across UI components
 - Internationalization support using `react-i18next`.
-- State management and data fetching with `URQL`.
+- Data fetching and caching with `@tanstack/query`.
 - FSD architecture for improved scalability and maintainability.
 
 ## Directory Structure
@@ -115,25 +115,13 @@ After adding or removing a variable, you need to duplicate the changes from inte
 
 More information in the [documents](https://main.vitejs.dev/guide/env-and-mode.html)
 
-## Graphql codegen
+## Api codegen
 
-To generate types from the graphql schema, [graphql codegen](https://the-guild.dev/graphql/codegen) is used and integrated via [vite-plugin-graphql-codegen](https://github.com/danielwaltz/vite-plugin-graphql-codegen#readme).
-Generation occurs when files containing the graphql tag are changed.
-
-All types of graphkl schema will be generated in the directory `./src/shared/api/models`.
-
+To generate types from the OpenAPI schema
 Example:
 
 ```ts
-import { graphql } from "@/shared/api/models";
-
-export const GetHomePageDataQuery = graphql(/* GraphQL */ `
-  query GetHomePageData {
-    getAllPokemon(offset: 0, take: 10) {
-      key
-    }
-  }
-`);
+npm run gen:api
 ```
 
 ## Localization
@@ -181,68 +169,6 @@ export type RouterContext = {
 ```
 
 See usage in the [docs](https://tanstack.com/router/latest/docs/framework/react/guide/router-context).
-
-## Data Fetching
-
-### Creating loader
-
-```ts
-import { getRouteApi } from "@tanstack/react-router";
-import { makeLoaderByPath } from "@/shared/lib";
-
-const routeApi = getRouteApi("/your-route");
-
-const makeLoader = makeLoaderByPath<typeof routeApi.id>();
-
-export const loader = makeLoader(async ({ context, search, params, cause }) => {
-  // ...
-};
-```
-
-Thanks to the `makeLoaderByPath` method we can get a function to create our loader with already typed values ​​such as: context, parameters, query parameters and the reason for calling the loader.
-
-### Using Loader
-
-In this application, loader method from react-router are utilized for data fetching, respectively. These methods can accept a context argument, which is used to access the URQL client.
-
-Here’s a brief overview of how to implement them:
-
-- Loader: The loader function is used to fetch data before rendering a route.
-
-```ts
-// ./pages/your-page/api/loader.ts
-import { mapResultSourseToPromise } from "@/shared/api/utils";
-import { makeLoaderByPath } from "@/shared/lib";
-
-import { GetHomePageDataQuery } from "./queries";
-import { routeApi } from "../config/routeApi";
-
-const makeLoader = makeLoaderByPath<typeof routeApi.id>();
-
-export const loader = makeLoader(async ({ context, search }) => {
-  const page = search.page || 1;
-
-  const resultSource = context.client.query(GetHomePageDataQuery, {
-    offset: (page - 1) * 10,
-    take: page * 10,
-  });
-
-  return mapResultSourseToPromise(resultSource);
-});
-```
-
-Getting data using useLoaderData:
-
-```tsx
-// ./pages/your-page/ui/YourPage.tsx
-import { routeApi } from "../config/routeApi";
-
-export const HomePage = () => {
-  const data = routeApi.useLoaderData();
-
-  return JSON.stringify(data);
-};
-```
 
 ## Code generation
 
