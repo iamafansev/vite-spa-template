@@ -4,14 +4,15 @@ import {
   Link as LinkRR,
   Outlet,
   useRouter,
+  useRouterState,
 } from "@tanstack/react-router";
-import { FC, useCallback } from "react";
+import { FC, PropsWithChildren, useCallback } from "react";
 import { useFormStatus } from "react-dom";
 import { LogOut, Sun, SunMoon, Moon } from "lucide-react";
 
 import { useTheme } from "@/entities/theme";
 import { updateAbility, useAbility } from "@/entities/ability";
-import { Button, Link } from "@/shared/ui";
+import { Button, Link, SubmittingOverlay } from "@/shared/ui";
 import { sleep } from "@/shared/lib";
 
 const LogoutAction: FC = () => {
@@ -20,6 +21,20 @@ const LogoutAction: FC = () => {
     <Button type="submit" variant="ghost" loading={pending}>
       <LogOut />
     </Button>
+  );
+};
+
+const Overlay: FC<PropsWithChildren> = ({ children }) => {
+  const isLoading = useRouterState({
+    select: (state) => state.isLoading,
+  });
+
+  const { isFetching } = Route.useMatch();
+
+  return isFetching || isLoading ? (
+    <SubmittingOverlay className="static">{children}</SubmittingOverlay>
+  ) : (
+    children
   );
 };
 
@@ -39,12 +54,12 @@ export const AppLayout: FC = () => {
 
   return (
     <>
-      <header className="px-6 py-4 flex justify-between items-center">
+      <header className="px-6 py-4 flex justify-between items-center absolute w-full left-0 top-0">
         <nav>
           <ul>
             <li>
               <Link asChild>
-                <LinkRR to="/">Pockemons</LinkRR>
+                <LinkRR to="/">Animals</LinkRR>
               </Link>
             </li>
           </ul>
@@ -95,7 +110,9 @@ export const AppLayout: FC = () => {
           </ul>
         </nav>
       </header>
-      <Outlet />
+      <Overlay>
+        <Outlet />
+      </Overlay>
     </>
   );
 };

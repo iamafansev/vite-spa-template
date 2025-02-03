@@ -1,26 +1,50 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-import { HomePage, GetHomePageDataQuery } from "@/pages/home";
-import { mapResultSourseToPromise } from "@/shared/api/utils";
+import { HomePage } from "@/pages/home";
 import { PageLoader } from "@/shared/ui";
 
 export const Route = createFileRoute("/_auth/")({
   component: HomePage,
   pendingComponent: PageLoader,
-  validateSearch: (search: Record<string, unknown>): { page?: number } => {
+  validateSearch: (
+    search: Record<string, unknown>
+  ): { name?: string; page?: number; pageSize?: number } => {
     return {
+      name: typeof search?.name === "string" ? search.name : undefined,
       page: typeof search?.page === "number" ? search.page : undefined,
+      pageSize:
+        typeof search?.pageSize === "number" ? search.pageSize : undefined,
     };
   },
-  loaderDeps: ({ search: { page } }) => ({ page }),
-  loader: ({ context, deps }) => {
-    const page = deps.page || 1;
+  loaderDeps: ({ search }) => search,
+  loader: async ({ context: { queryClient, openapiQueryClient }, deps }) => {
+    const pageNumber = deps.page || 0;
+    const pageSize = deps.pageSize || 10;
+    const name = deps.name || undefined;
+    const body = { name };
 
-    const resultSource = context.client.query(GetHomePageDataQuery, {
-      offset: (page - 1) * 10,
-      take: page * 10,
-    });
+    const result = await queryClient.fetchQuery(
+      openapiQueryClient.queryOptions("post", "/v1/rest/animal/search", {
+        params: { query: { pageSize, pageNumber } },
+        body,
+        bodySerializer: (body) => {
+          const params = new URLSearchParams();
 
-    return mapResultSourseToPromise(resultSource);
+          if (!body) return params;
+
+          for (const [paramName, paramValue] of Object.entries(body)) {
+            if (paramValue !== undefined) {
+              params.append(paramName, paramValue.toString());
+            }
+          }
+          return params;
+        },
+        headers: {
+          "content-type": "application/x-www-form-urlencoded",
+        },
+      })
+    );
+
+    return result;
   },
 });

@@ -1,7 +1,15 @@
+import { useTranslation } from "react-i18next";
+
 import { routeApi } from "../config/routeApi";
 
 export const {{ pascalCase name }}Page = () => {
+  const { t } = useTranslation("{{ name }}-page");
   const data = routeApi.useLoaderData();
 
-  return JSON.stringify(data);
+  return (
+    <section className="flex flex-col items-center pt-32">
+      <h1 className="font-bold text-4xl">{t("title")}</h1>
+      {JSON.stringify(data)}
+    </section>
+  );
 };
