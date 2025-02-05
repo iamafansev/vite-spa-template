@@ -1,11 +1,15 @@
 // Определение колонок для таблицы
 export const columns = [
   {
-    accessorKey: "uid",
-    header: "UID",
+    accessorKey: "key",
+    header: "Name",
   },
   {
-    accessorKey: "name",
-    header: "Name",
+    accessorKey: "height",
+    header: "Height",
+  },
+  {
+    accessorKey: "color",
+    header: "Color",
   },
 ];

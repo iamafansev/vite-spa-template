@@ -2302,6 +2302,52 @@ export enum MovesEnum {
   Zippyzap = 'zippyzap'
 }
 
+/** A single Nature entry */
+export type Nature = {
+  __typename?: 'Nature';
+  /** The stat the nature decreases by 10% */
+  decreasedStat?: Maybe<Scalars['String']['output']>;
+  /** The flavor of food the nature dislikes */
+  dislikedFlavor?: Maybe<Scalars['String']['output']>;
+  /** The stat the nature increases by 10% */
+  increasedStat?: Maybe<Scalars['String']['output']>;
+  /** The key of the nature as stored in the API */
+  key: NaturesEnum;
+  /** The name of a nature */
+  name: Scalars['String']['output'];
+  /** The flavor of food the nature prefers */
+  preferredFlavor?: Maybe<Scalars['String']['output']>;
+};
+
+/** The Natures in Pokémon */
+export enum NaturesEnum {
+  Adamant = 'adamant',
+  Bashful = 'bashful',
+  Bold = 'bold',
+  Brave = 'brave',
+  Calm = 'calm',
+  Careful = 'careful',
+  Docile = 'docile',
+  Gentle = 'gentle',
+  Hardy = 'hardy',
+  Hasty = 'hasty',
+  Impish = 'impish',
+  Jolly = 'jolly',
+  Lax = 'lax',
+  Lonely = 'lonely',
+  Mild = 'mild',
+  Modest = 'modest',
+  Naive = 'naive',
+  Naughty = 'naughty',
+  Quiet = 'quiet',
+  Quirky = 'quirky',
+  Rash = 'rash',
+  Relaxed = 'relaxed',
+  Sassy = 'sassy',
+  Serious = 'serious',
+  Timid = 'timid'
+}
+
 /** A Pokémon's entry */
 export type Pokemon = {
   __typename?: 'Pokemon';
@@ -3852,6 +3898,12 @@ export type Query = {
   /** Gets the details on a Pokémon ability, using the ability name */
   getAbility: Ability;
   /**
+   * Returns a list of all the Natures in Pokémon.
+   *
+   * For every Nature all the data on each requested field is returned.
+   */
+  getAllNatures: Array<Nature>;
+  /**
    * Returns a list of all the known Pokémon.
    *
    * For every Pokémon all the data on each requested field is returned.
@@ -3923,6 +3975,8 @@ export type Query = {
   getLearnset: Learnset;
   /** Gets the details on a Pokémon move, using the move name */
   getMove: Move;
+  /** Gets the details of a specific Nature */
+  getNature: Nature;
   /**
    * Gets details on a single Pokémon based on species name
    *
@@ -4018,6 +4072,11 @@ export type QueryGetMoveArgs = {
 };
 
 
+export type QueryGetNatureArgs = {
+  nature: NaturesEnum;
+};
+
+
 export type QueryGetPokemonArgs = {
   offsetFlavorTexts?: InputMaybe<Scalars['Int']['input']>;
   pokemon: PokemonEnum;
@@ -4106,11 +4165,11 @@ export enum TypesEnum {
 
 export type GetHomePageDataQueryVariables = Exact<{
   offset: Scalars['Int']['input'];
-  take: Scalars['Int']['input'];
+  take?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
-export type GetHomePageDataQuery = { __typename?: 'Query', getAllPokemon: Array<{ __typename?: 'Pokemon', key: PokemonEnum }> };
+export type GetHomePageDataQuery = { __typename?: 'Query', getAllPokemon: Array<{ __typename?: 'Pokemon', key: PokemonEnum, color: string, height: number }> };
 
 
-export const GetHomePageDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetHomePageData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"take"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getAllPokemon"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}},{"kind":"Argument","name":{"kind":"Name","value":"take"},"value":{"kind":"Variable","name":{"kind":"Name","value":"take"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}}]}}]}}]} as unknown as DocumentNode<GetHomePageDataQuery, GetHomePageDataQueryVariables>;
+export const GetHomePageDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetHomePageData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"offset"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"take"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}},"defaultValue":{"kind":"IntValue","value":"10"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getAllPokemon"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"offset"},"value":{"kind":"Variable","name":{"kind":"Name","value":"offset"}}},{"kind":"Argument","name":{"kind":"Name","value":"take"},"value":{"kind":"Variable","name":{"kind":"Name","value":"take"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"key"}},{"kind":"Field","name":{"kind":"Name","value":"color"}},{"kind":"Field","name":{"kind":"Name","value":"height"}}]}}]}}]} as unknown as DocumentNode<GetHomePageDataQuery, GetHomePageDataQueryVariables>;

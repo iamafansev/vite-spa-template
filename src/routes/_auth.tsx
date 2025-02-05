@@ -59,7 +59,7 @@ export const AppLayout: FC = () => {
           <ul>
             <li>
               <Link asChild>
-                <LinkRR to="/">Animals</LinkRR>
+                <LinkRR to="/">Pokemons</LinkRR>
               </Link>
             </li>
           </ul>

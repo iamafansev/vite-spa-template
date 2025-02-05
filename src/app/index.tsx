@@ -1,38 +1,25 @@
-import createFetchClient from "openapi-fetch";
-import createOpenApiClient from "openapi-react-query";
-import { QueryClient } from "@tanstack/react-query";
+import { Client, cacheExchange, fetchExchange } from "urql";
 import { RouterProvider } from "@tanstack/react-router";
-
-import type { paths } from "@/shared/api/stapi";
 
 import { ability } from "@/entities/ability";
 
 import { createRouterWithContext } from "./router";
 import "./entry.css";
 
-const getFetchClient = () => {
-  return createFetchClient<paths>({
-    baseUrl: import.meta.env.VITE_API_URL,
+const getClient = () => {
+  return new Client({
+    url: import.meta.env.VITE_API_URL,
+    exchanges: [cacheExchange, fetchExchange],
   });
 };
 
 export const App = () => {
-  const fetchClient = getFetchClient();
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: 5 * 60 * 1000,
-      },
-    },
-  });
-  const openapiQueryClient = createOpenApiClient(fetchClient);
+  const client = getClient();
 
   return (
     <RouterProvider
       router={createRouterWithContext({
-        fetchClient,
-        queryClient,
-        openapiQueryClient,
+        client,
         ability,
       })}
     />

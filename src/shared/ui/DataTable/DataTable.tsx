@@ -19,7 +19,6 @@ import {
   TableRow,
 } from "../Table";
 
-import { Input } from "../Input";
 import { Button } from "../Button/Button";
 
 interface DataTableProps<TData, TValue> {
@@ -34,7 +33,6 @@ interface DataTableProps<TData, TValue> {
   nameValue?: string;
   onPrevPage: VoidFunction;
   onNextPage: VoidFunction;
-  formAction: (formData: FormData) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -43,10 +41,8 @@ export function DataTable<TData, TValue>({
   pagination,
   rowCount,
   pageCount,
-  nameValue,
   onPrevPage,
   onNextPage,
-  formAction,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -75,15 +71,6 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="w-2/3">
-      <form className="flex items-center py-4" action={formAction}>
-        <Input
-          id="name"
-          name="name"
-          placeholder="Filter names..."
-          className="max-w-sm"
-          initialValue={nameValue}
-        />
-      </form>
       <div className="rounded-md border">
         <Table>
           <TableHeader>

@@ -26,7 +26,7 @@ export default defineConfig(({ mode }) => {
       webfontDownload(),
       svgr(),
       codegen({
-        runOnStart: false,
+        runOnStart: true,
         runOnBuild: false,
         configOverrideWatcher: {
           watch: ["src/**/*.{ts,tsx}", "!src/gql/**/*"],
