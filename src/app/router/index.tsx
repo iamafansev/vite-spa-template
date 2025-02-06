@@ -15,6 +15,7 @@ export const createRouterWithContext = (context: RouterContext) => {
     routeTree,
     context: context,
     defaultPendingComponent: PageLoader,
+    defaultPendingMs: 5000,
     Wrap: ({ children }) => {
       return (
         <StrictMode>

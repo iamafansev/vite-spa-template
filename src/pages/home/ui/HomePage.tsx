@@ -3,13 +3,7 @@ import { useRouter, useRouteContext } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
-import {
-  Button,
-  Dialog,
-  useDialog,
-  DataTable,
-  SubmittingOverlay,
-} from "@/shared/ui";
+import { Button, Dialog, useDialog, DataTable } from "@/shared/ui";
 
 import { routeApi } from "../config/routeApi";
 import { columns } from "../config/table";
@@ -24,7 +18,6 @@ export const HomePage = () => {
   });
   const data = routeApi.useLoaderData();
   const search = routeApi.useSearch();
-  const { isFetching } = routeApi.useMatch();
   const client = useQueryClient();
 
   const currentPage = search.page || 0;
@@ -37,7 +30,7 @@ export const HomePage = () => {
         "/v1/rest/animal/search"
       )
     );
-    router.invalidate();
+    router.invalidate({ sync: true });
   }, [routerContext, router, client]);
 
   const formAction = useCallback(
@@ -63,7 +56,7 @@ export const HomePage = () => {
   );
 
   return (
-    <SubmittingOverlay processing={Boolean(isFetching)}>
+    <>
       <section className="flex flex-col items-center pt-32">
         <h1 className="font-bold text-4xl">{t("title")}</h1>
         <DataTable
@@ -123,6 +116,6 @@ export const HomePage = () => {
         <h2>Title</h2>
         <p>Description</p>
       </Dialog>
-    </SubmittingOverlay>
+    </>
   );
 };
