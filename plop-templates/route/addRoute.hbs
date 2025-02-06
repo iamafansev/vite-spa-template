@@ -7,7 +7,7 @@ export const Route = createFileRoute("/_auth/{{route}}")({
   component: {{ pascalCase name }}Page,
   pendingComponent: PageLoader,
   loaderDeps: ({ search }) => search,
-  loader: async ({ context: { queryClient, openapiQueryClient }, deps }) => {
+  loader: async ({ context, deps }) => {
     return {};
   },
 });
