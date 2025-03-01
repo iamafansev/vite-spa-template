@@ -13,7 +13,10 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
-const documents = {
+type Documents = {
+    "\n  query GetHomePageData($offset: Int!, $take: Int = 10) {\n    getAllPokemon(offset: $offset, take: $take) {\n      key\n      color\n      height\n    }\n  }\n": typeof types.GetHomePageDataDocument,
+};
+const documents: Documents = {
     "\n  query GetHomePageData($offset: Int!, $take: Int = 10) {\n    getAllPokemon(offset: $offset, take: $take) {\n      key\n      color\n      height\n    }\n  }\n": types.GetHomePageDataDocument,
 };
 
