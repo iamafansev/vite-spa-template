@@ -7,7 +7,6 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
-    "noUncheckedIndexedAccess": true,
 
     /* Bundler mode */
     "moduleResolution": "Bundler",
@@ -18,11 +17,29 @@
     "jsx": "react-jsx",
 
     /* Linting */
-    "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
+
+    /* Strict Type Checking */
+    "strict": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "noImplicitThis": true,
+    "noImplicitAny": false,
+    "useUnknownInCatchVariables": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+
+    /* Additional Checks */
+    "noUncheckedIndexedAccess": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "allowUnusedLabels": false,
+    "allowUnreachableCode": false,
+    "forceConsistentCasingInFileNames": true,
+
     "paths": {
       "@/*": ["./src/*"]
     }
