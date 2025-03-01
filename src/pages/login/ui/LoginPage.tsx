@@ -3,7 +3,7 @@ import { useFormStatus } from "react-dom";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 
-import { Button, SubmittingOverlay } from "@/shared/ui";
+import { Button, SubmittingOverlay, Input } from "@/shared/ui";
 
 import { routeApi } from "../config/routeApi";
 import { sleep } from "@/shared/lib";
@@ -14,10 +14,10 @@ const LoginFormContent: FC = () => {
   return (
     <>
       <label className="flex flex-col text-left">
-        Login
-        <input id="login" name="login" disabled={pending} />
+        <span className="pb-1">Login</span>
+        <Input id="login" name="login" disabled={pending} />
       </label>
-      <Button type="submit" className="mt-4" loading={pending}>
+      <Button type="submit" className="mt-6" loading={pending}>
         Submit
       </Button>
     </>
