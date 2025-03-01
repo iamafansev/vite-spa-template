@@ -2,6 +2,7 @@
 .dialogNew {
   opacity: 0;
   padding: 0px;
+  margin: auto;
   border: none;
   min-width: 600px;
   background-color: hsl(var(--popover));
@@ -43,6 +44,7 @@
 .dialog {
   padding: 0px;
   border: none;
+  margin: auto;
   animation: fade-out 0.3s ease-out;
   min-width: 600px;
   background-color: hsl(var(--popover));
