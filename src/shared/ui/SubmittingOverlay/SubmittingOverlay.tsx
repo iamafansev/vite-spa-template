@@ -27,7 +27,7 @@ const SubmittingOverlay = forwardRef<HTMLDivElement, Props>(
             "flex",
             "justify-center",
             "overflow-hidden",
-            "z-[1000]",
+            "z-1000",
             "items-center"
           )}
         >
@@ -36,7 +36,7 @@ const SubmittingOverlay = forwardRef<HTMLDivElement, Props>(
             className={cn(
               "absolute",
               "inset-0",
-              "backdrop-blur-sm",
+              "backdrop-blur-xs",
               "bg-background/10"
             )}
           />
