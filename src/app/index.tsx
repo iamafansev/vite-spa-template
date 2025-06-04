@@ -3,7 +3,7 @@ import createOpenApiClient from "openapi-react-query";
 import { QueryClient } from "@tanstack/react-query";
 import { RouterProvider } from "@tanstack/react-router";
 
-import type { paths } from "@/shared/api/stapi";
+import type { paths } from "@/shared/api/types/paths";
 
 import { ability } from "@/entities/ability";
 

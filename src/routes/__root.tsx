@@ -8,7 +8,7 @@ import { AppAbility, updateAbility } from "@/entities/ability";
 import { PageLoader } from "@/shared/ui";
 import { MINUTE } from "@/shared/lib";
 import { initI18n } from "@/entities/i18n";
-import type { paths } from "@/shared/api/stapi";
+import type { paths } from "@/shared/api/types/paths";
 
 export type RouterContext = {
   ability: AppAbility;

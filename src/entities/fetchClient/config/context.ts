@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import type { Client } from "openapi-fetch";
 
-import type { paths } from "@/shared/api/stapi";
+import type { paths } from "@/shared/api/types/paths";
 
 type ClientFetchContextInterface = Client<paths>;
 
