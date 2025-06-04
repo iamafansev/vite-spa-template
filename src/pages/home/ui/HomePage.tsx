@@ -1,8 +1,9 @@
 import { useCallback } from "react";
-import { useRouter, useRouteContext } from "@tanstack/react-router";
+import { useRouter } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
+import { useApiClient } from "@/shared/api/client";
 import { Button, Dialog, useDialog, DataTable } from "@/shared/ui";
 
 import { routeApi } from "../config/routeApi";
@@ -12,10 +13,9 @@ export const HomePage = () => {
   const { t } = useTranslation("home-page");
   const dialog = useDialog();
 
+  const { openapiQueryClient } = useApiClient();
+
   const router = useRouter();
-  const routerContext = useRouteContext({
-    from: "__root__",
-  });
   const data = routeApi.useLoaderData();
   const search = routeApi.useSearch();
   const client = useQueryClient();
@@ -25,13 +25,10 @@ export const HomePage = () => {
 
   const refetchData = useCallback(() => {
     client.invalidateQueries(
-      routerContext.openapiQueryClient.queryOptions(
-        "post",
-        "/v1/rest/animal/search"
-      )
+      openapiQueryClient.queryOptions("post", "/v1/rest/animal/search")
     );
     router.invalidate({ sync: true });
-  }, [routerContext, router, client]);
+  }, [openapiQueryClient, router, client]);
 
   const formAction = useCallback(
     (formData: FormData) => {
@@ -44,12 +41,6 @@ export const HomePage = () => {
       router.navigate({
         to: "/",
         search: (prevSearch) => ({ ...prevSearch, name: name || undefined }),
-        mask: {
-          to: "/",
-          search: (prevSearch) => ({
-            page: prevSearch.pageSize,
-          }),
-        },
       });
     },
     [router]
@@ -81,12 +72,6 @@ export const HomePage = () => {
                 ...prevSearch,
                 page: currentPage - 1,
               }),
-              mask: {
-                to: "/",
-                search: {
-                  page: currentPage - 1,
-                },
-              },
             })
           }
           onNextPage={() =>
@@ -96,12 +81,6 @@ export const HomePage = () => {
                 ...prevSearch,
                 page: currentPage + 1,
               }),
-              mask: {
-                to: "/",
-                search: {
-                  page: currentPage + 1,
-                },
-              },
             })
           }
         />

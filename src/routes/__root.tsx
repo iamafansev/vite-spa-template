@@ -30,5 +30,5 @@ export const Route = createRootRouteWithContext<RouterContext>()({
     return Promise.all([initI18n()]);
   },
   staleTime: MINUTE * 10,
-  gcTime: MINUTE * 10,
+  gcTime: MINUTE * 30,
 });
