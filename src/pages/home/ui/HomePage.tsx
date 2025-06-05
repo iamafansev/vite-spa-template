@@ -2,23 +2,20 @@ import { useCallback } from "react";
 import { useRouter } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
+import { Button, Input } from "@heroui/react";
 
 import { useApiClient } from "@/shared/api/client";
-import { Button, Dialog, useDialog, DataTable } from "@/shared/ui";
 
 import { routeApi } from "../config/routeApi";
-import { columns } from "../config/table";
 
 export const HomePage = () => {
   const { t } = useTranslation("home-page");
-  const dialog = useDialog();
-
-  const { openapiQueryClient } = useApiClient();
 
   const router = useRouter();
   const data = routeApi.useLoaderData();
   const search = routeApi.useSearch();
   const client = useQueryClient();
+  const { openapiQueryClient } = useApiClient();
 
   const currentPage = search.page || 0;
   const filterName = search.name;
@@ -28,7 +25,7 @@ export const HomePage = () => {
       openapiQueryClient.queryOptions("post", "/v1/rest/animal/search")
     );
     router.invalidate({ sync: true });
-  }, [openapiQueryClient, router, client]);
+  }, [router, client, openapiQueryClient]);
 
   const formAction = useCallback(
     (formData: FormData) => {
@@ -50,51 +47,58 @@ export const HomePage = () => {
     <>
       <section className="flex flex-col items-center pt-32">
         <h1 className="font-bold text-4xl">{t("title")}</h1>
-        <DataTable
-          columns={columns}
-          data={data.animals}
-          rowCount={data.page?.numberOfElements || -1}
-          pageCount={data.page?.totalPages}
-          nameValue={filterName}
-          pagination={
-            data.page
-              ? {
-                  pageSize: data.page.pageSize,
-                  pageIndex: data.page.pageNumber,
-                }
-              : undefined
-          }
-          formAction={formAction}
-          onPrevPage={() =>
-            router.navigate({
-              to: "/",
-              search: (prevSearch) => ({
-                ...prevSearch,
-                page: currentPage - 1,
-              }),
-            })
-          }
-          onNextPage={() =>
-            router.navigate({
-              to: "/",
-              search: (prevSearch) => ({
-                ...prevSearch,
-                page: currentPage + 1,
-              }),
-            })
-          }
-        />
-        <Button type="button" onClick={refetchData} className="my-4">
+        <form className="flex items-center py-4" action={formAction}>
+          <Input
+            id="name"
+            name="name"
+            placeholder="Search"
+            className="max-w-sm"
+            defaultValue={filterName}
+          />
+        </form>
+        <ul>
+          {data.animals.map((animal) => (
+            <li key={animal.uid}>{animal.name}</li>
+          ))}
+        </ul>
+        <div className="flex items-center justify-end space-x-2 py-4">
+          <Button
+            variant="bordered"
+            size="sm"
+            onPress={() =>
+              router.navigate({
+                to: "/",
+                search: (prevSearch) => ({
+                  ...prevSearch,
+                  page: currentPage - 1,
+                }),
+              })
+            }
+            isDisabled={currentPage < 1}
+          >
+            Previous
+          </Button>
+          <Button
+            variant="bordered"
+            size="sm"
+            onPress={() =>
+              router.navigate({
+                to: "/",
+                search: (prevSearch) => ({
+                  ...prevSearch,
+                  page: currentPage + 1,
+                }),
+              })
+            }
+            isDisabled={currentPage >= (data.page?.totalPages || 0)}
+          >
+            Next
+          </Button>
+        </div>
+        <Button type="button" onPress={refetchData} className="my-4">
           reload data
         </Button>
-        <Button type="button" onClick={dialog.open}>
-          open dialog
-        </Button>
       </section>
-      <Dialog ref={dialog.ref}>
-        <h2>Title</h2>
-        <p>Description</p>
-      </Dialog>
     </>
   );
 };

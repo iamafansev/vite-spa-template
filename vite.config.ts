@@ -5,6 +5,7 @@ import svgr from "vite-plugin-svgr";
 import { VitePWA } from "vite-plugin-pwa";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { TanStackRouterVite } from "@tanstack/router-plugin/vite";
+import tailwindcss from "@tailwindcss/vite";
 
 import manifest from "./manifest.json";
 
@@ -19,6 +20,7 @@ export default defineConfig(() => {
       react(),
       tsconfigPaths(),
       webfontDownload(),
+      tailwindcss(),
       svgr(),
       VitePWA({
         manifest,

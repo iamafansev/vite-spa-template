@@ -1,7 +1,7 @@
 import { type FC, useCallback } from "react";
 import { ErrorComponentProps, useRouter } from "@tanstack/react-router";
+import { Button } from "@heroui/react";
 
-import { Button } from "@/shared/ui";
 import { isError, isResponseError } from "@/shared/lib";
 
 export const ErrorBoundary: FC<ErrorComponentProps> = ({ error }) => {
@@ -47,7 +47,7 @@ export const ErrorBoundary: FC<ErrorComponentProps> = ({ error }) => {
   return (
     <div className="flex flex-col items-center pt-32">
       <h1 className="text-4xl">Somthing went wrong</h1>
-      <Button type="button" onClick={refetch} className="mt-6">
+      <Button type="button" onPress={refetch} className="mt-6">
         refetch
       </Button>
     </div>

@@ -1,10 +1,9 @@
 import { FC, PropsWithChildren, forwardRef, useMemo } from "react";
 import { X } from "lucide-react";
+import { Button } from "@heroui/react";
 
 import { cn } from "@/shared/lib";
 import { detectCSSFeature } from "@/shared/lib";
-
-import { Button } from "../Button/Button";
 
 import styles from "./Dialog.module.css";
 

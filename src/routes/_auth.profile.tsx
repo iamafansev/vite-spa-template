@@ -1,17 +1,17 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
 
-import { ProfilePage } from '@/pages/profile'
-import { PageLoader } from '@/shared/ui'
-import { sleep } from '@/shared/lib'
+import { ProfilePage } from "@/pages/profile";
+import { FullHeightLoader } from "@/shared/ui";
+import { sleep } from "@/shared/lib";
 
-export const Route = createFileRoute('/_auth/profile')({
+export const Route = createFileRoute("/_auth/profile")({
   component: ProfilePage,
-  pendingComponent: PageLoader,
+  pendingComponent: FullHeightLoader,
   loader: async () => {
-    await sleep(500)
+    await sleep(500);
 
     return {
-      userLogin: localStorage.getItem('login'),
-    }
+      userLogin: localStorage.getItem("login"),
+    };
   },
-})
+});

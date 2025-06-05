@@ -1,27 +1,15 @@
-import { FC, useCallback } from "react";
-import { useFormStatus } from "react-dom";
+import { useActionState } from "react";
 import { useNavigate, useRouterState } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
+import { Button, Input } from "@heroui/react";
 
-import { Button, SubmittingOverlay, Input } from "@/shared/ui";
+import { sleep } from "@/shared/lib";
+import { LoadingOverlay } from "@/shared/ui";
 
 import { routeApi } from "../config/routeApi";
-import { sleep } from "@/shared/lib";
 
-const LoginFormContent: FC = () => {
-  const { pending } = useFormStatus();
-
-  return (
-    <>
-      <label className="flex flex-col text-left">
-        <span className="pb-1">Login</span>
-        <Input id="login" name="login" disabled={pending} />
-      </label>
-      <Button type="submit" className="mt-6" loading={pending}>
-        Submit
-      </Button>
-    </>
-  );
+type FormState = {
+  data: { login: string };
 };
 
 export const LoginPage = () => {
@@ -33,30 +21,41 @@ export const LoginPage = () => {
     select: (state) => state.isLoading,
   });
 
-  const loginAction = useCallback(
-    async (formData: FormData) => {
+  const [, action, isPending] = useActionState(
+    async (prevState: FormState, formData: FormData) => {
       const login = formData.get("login");
 
       if (!login || typeof login !== "string") {
-        return;
+        return prevState;
       }
 
       await sleep(1000);
 
       localStorage.setItem("login", login);
       navigate({ to: redirect, replace: true });
+
+      return { data: { login } };
     },
-    [redirect, navigate]
+    { data: { login: "" } }
   );
 
   return (
-    <SubmittingOverlay className="static" processing={isLoading}>
+    <LoadingOverlay className="static" processing={isLoading}>
       <section className="flex flex-col items-center pt-32">
         <h1 className="font-bold text-4xl">{t("title")}</h1>
-        <form className="flex flex-col mt-10 text-center" action={loginAction}>
-          <LoginFormContent />
+        <form className="flex flex-col mt-10 text-center" action={action}>
+          <Input
+            id="login"
+            name="login"
+            label="Login"
+            isDisabled={isPending}
+            size="sm"
+          />
+          <Button type="submit" className="mt-6" isLoading={isPending}>
+            Submit
+          </Button>
         </form>
       </section>
-    </SubmittingOverlay>
+    </LoadingOverlay>
   );
 };

@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { HomePage } from "@/pages/home";
-import { PageLoader } from "@/shared/ui";
+import { FullHeightLoader } from "@/shared/ui";
 
 export const Route = createFileRoute("/_auth/")({
   component: HomePage,
-  pendingComponent: PageLoader,
+  pendingComponent: FullHeightLoader,
   validateSearch: (
     search: Record<string, unknown>
   ): { name?: string; page?: number; pageSize?: number } => {
