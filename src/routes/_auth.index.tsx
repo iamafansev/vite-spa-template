@@ -1,11 +1,20 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, stripSearchParams } from "@tanstack/react-router";
 
 import { HomePage } from "@/pages/home";
 import { FullHeightLoader } from "@/shared/ui";
 
+const searchDefaultValues = {
+  name: "",
+  page: 0,
+  pageSize: 10,
+};
+
 export const Route = createFileRoute("/_auth/")({
   component: HomePage,
   pendingComponent: FullHeightLoader,
+  search: {
+    middlewares: [stripSearchParams(searchDefaultValues)],
+  },
   validateSearch: (
     search: Record<string, unknown>
   ): { name?: string; page?: number; pageSize?: number } => {
