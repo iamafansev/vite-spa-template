@@ -27,8 +27,8 @@ export const Route = createFileRoute("/_auth/")({
   },
   loaderDeps: ({ search }) => search,
   loader: async ({ context: { queryClient, openapiQueryClient }, deps }) => {
-    const pageNumber = deps.page || 0;
-    const pageSize = deps.pageSize || 10;
+    const pageNumber = deps.page || searchDefaultValues.page;
+    const pageSize = deps.pageSize || searchDefaultValues.pageSize;
     const name = deps.name || undefined;
     const body = { name };
 
